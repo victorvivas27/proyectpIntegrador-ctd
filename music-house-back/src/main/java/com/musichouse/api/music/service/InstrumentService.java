@@ -10,6 +10,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,19 +32,22 @@ public class InstrumentService implements InstrumentInterface {
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
-        Instruments instrument = mapper.map(instrumentsDtoEntrance, Instruments.class);
+        Instruments instrument = new Instruments();
+        instrument.setName(instrumentsDtoEntrance.getName());
+        instrument.setDescription(instrumentsDtoEntrance.getDescription());
+        instrument.setRentalPrice(instrumentsDtoEntrance.getRentalPrice());
         instrument.setCategory(category);
-        List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
-                .map(url -> {
-                    ImageUrls imageUrl = new ImageUrls();
-                    imageUrl.setImageUrl(url);
-                    imageUrl.setInstrument(instrument);
-                    return imageUrl;
-                }).toList();
-        instrument.setImageUrls(imageUrls);
-        Instruments instrumentSave = instrumentRepository.save(instrument);
-        InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
-        return instrumentDtoExit;
+         List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
+               .map(url -> {
+                   ImageUrls imageUrl = new ImageUrls();
+                   imageUrl.setImageUrl(url);
+                   imageUrl.setInstrument(instrument);
+                   return imageUrl;
+               }).collect(Collectors.toList());
+       instrument.setImageUrls(imageUrls);
+       Instruments instrumentSave = instrumentRepository.save(instrument);
+       InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
+       return instrumentDtoExit;
     }
 
 

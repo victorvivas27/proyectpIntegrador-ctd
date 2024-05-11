@@ -49,8 +49,8 @@ public class Instruments {
     /**
      * Categoría a la que pertenece el instrumento.
      */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "id_category", referencedColumnName = "id_category", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "id_category")
     private Category category;
 
     /**

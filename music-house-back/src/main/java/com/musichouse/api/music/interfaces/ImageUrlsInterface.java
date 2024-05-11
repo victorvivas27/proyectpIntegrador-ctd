@@ -17,6 +17,6 @@ public interface ImageUrlsInterface {
 
     ImagesUrlsDtoExit updateImageUrls(ImageUrlsDtoModify imageUrlsDtoModify) throws ResourceNotFoundException;
 
-    void deleteImageUrls(Long idImage,Long idInstrument) throws ResourceNotFoundException;
+    void deleteImageUrls(Long idImage, Long idInstrument) throws ResourceNotFoundException;
 
 }

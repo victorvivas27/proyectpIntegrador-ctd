@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
+/**
+ * Entidad que representa una categoría de música.
+ */
 @Entity
 @Data
 @Table(name = "CATEGORY")
@@ -30,4 +35,21 @@ public class Category {
      */
     @Column(name = "description", length = 255)
     private String description;
+
+    /**
+     * Fecha y hora de creación de la categoría.
+     */
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
+
+    /**
+     * Método ejecutado antes de persistir la entidad en la base de datos.
+     * Establece la fecha y hora de creación automáticamente.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
+    }
+
+    // Getters y setters (generados automáticamente por Lombok) omitidos para brevedad
 }

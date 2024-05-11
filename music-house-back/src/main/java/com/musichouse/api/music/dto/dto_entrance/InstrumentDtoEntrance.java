@@ -1,5 +1,6 @@
 package com.musichouse.api.music.dto.dto_entrance;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -25,7 +26,7 @@ public class InstrumentDtoEntrance {
     private BigDecimal rentalPrice;
     @NotNull(message = "el ID de la categoria no deve estar en blanco")
     private Long idCategory;
-    @NotNull(message = "Debe cargar al menos una imagen al crear el instrumento")
+   @NotNull(message = "Debe cargar al menos una imagen al crear el instrumento")
     private List<String> imageUrls;
 
 }
