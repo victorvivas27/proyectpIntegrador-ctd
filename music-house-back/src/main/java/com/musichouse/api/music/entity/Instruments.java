@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class Instruments {
      * Fecha y hora de creación de la categoría.
      */
     @Column(name = "creation_date")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     /**
      * Categoría a la que pertenece el instrumento.
@@ -71,6 +73,7 @@ public class Instruments {
      */
     @PrePersist
     public void prePersist() {
-        this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
+        // Capturar la fecha y hora actual en la zona horaria de Chile
+        this.creationDate = LocalDateTime.now(ZoneId.of("America/Santiago"));
     }
 }
