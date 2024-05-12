@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class InstrumentDtoExit {
     private Long idInstrument;
-    private LocalDate creationDate;
+    private String creationDate;
     private String name;
     private String description;
     private BigDecimal rentalPrice;

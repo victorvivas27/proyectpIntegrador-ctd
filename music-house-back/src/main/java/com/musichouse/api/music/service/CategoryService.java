@@ -4,6 +4,7 @@ import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 import com.musichouse.api.music.entity.Category;
+import com.musichouse.api.music.entity.Instruments;
 import com.musichouse.api.music.exception.CategoryAssociatedException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.CategoryInterface;
@@ -67,11 +68,11 @@ public class CategoryService implements CategoryInterface {
     public void deleteCategory(Long idCategory) throws ResourceNotFoundException, CategoryAssociatedException {
         Category categoryToDelete = categoryRepository.findById(idCategory)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + idCategory + " not found"));
-        /*List<Instruments> instruments = instrumentRepository.findByCategory(categoryToDelete);
+        List<Instruments> instruments = instrumentRepository.findByCategory(categoryToDelete);
         if (!instruments.isEmpty()) {
             throw new CategoryAssociatedException("Cannot delete category with id " + idCategory +
                     " as it is associated with instruments");
-        }*/
+        }
 
         categoryRepository.deleteById(idCategory);
     }

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ImagesUrlsDtoExit {
     private Long idImage;
-    private LocalDate creationDate;
+    private String creationDate;
     private String imageUrl;
 
 

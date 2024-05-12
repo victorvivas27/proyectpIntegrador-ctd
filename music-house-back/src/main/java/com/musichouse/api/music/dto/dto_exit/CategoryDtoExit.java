@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CategoryDtoExit {
     private Long idCategory;
-    private LocalDate creationDate;
+    private String creationDate;
     private String categoryName;
     private String description;
 
