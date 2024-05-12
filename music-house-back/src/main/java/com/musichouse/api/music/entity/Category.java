@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 /**
  * Entidad que representa una categoría de música.
@@ -40,7 +42,7 @@ public class Category {
      * Fecha y hora de creación de la categoría.
      */
     @Column(name = "creation_date")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     /**
      * Método ejecutado antes de persistir la entidad en la base de datos.
@@ -48,7 +50,8 @@ public class Category {
      */
     @PrePersist
     public void prePersist() {
-        this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
+        // Capturar la fecha y hora actual en la zona horaria de Chile
+        this.creationDate = LocalDateTime.now(ZoneId.of("America/Santiago"));
     }
 
 

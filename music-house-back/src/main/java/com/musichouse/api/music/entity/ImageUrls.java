@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 /**
@@ -35,7 +37,7 @@ public class ImageUrls {
      * Fecha y hora de creación de la categoría.
      */
     @Column(name = "creation_date")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     /**
      * Instrumento al que pertenece la imagen.
@@ -52,7 +54,8 @@ public class ImageUrls {
      */
     @PrePersist
     public void prePersist() {
-        this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
+        // Capturar la fecha y hora actual en la zona horaria de Chile
+        this.creationDate = LocalDateTime.now(ZoneId.of("America/Santiago"));
     }
 
 
