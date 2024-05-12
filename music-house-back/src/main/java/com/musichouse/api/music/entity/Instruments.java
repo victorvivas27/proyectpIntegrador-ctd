@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class Instruments {
      */
     @Column(name = "rental_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal rentalPrice;
+    /**
+     * Fecha y hora de creación de la categoría.
+     */
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
     /**
      * Categoría a la que pertenece el instrumento.
@@ -59,4 +65,12 @@ public class Instruments {
 
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ImageUrls> imageUrls = new ArrayList<>();
+    /**
+     * Método ejecutado antes de persistir la entidad en la base de datos.
+     * Establece la fecha y hora de creación automáticamente.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
+    }
 }

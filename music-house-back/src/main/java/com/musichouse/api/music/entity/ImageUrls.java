@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 
 /**
  * Entidad que representa las URLs de las imágenes asociadas a un instrumento.
@@ -29,6 +31,11 @@ public class ImageUrls {
      */
     @Column(name = "image_url", length = 255)
     private String imageUrl;
+    /**
+     * Fecha y hora de creación de la categoría.
+     */
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
     /**
      * Instrumento al que pertenece la imagen.
@@ -39,6 +46,14 @@ public class ImageUrls {
     @JoinColumn(name = "id_instrument")
     @ToString.Exclude
     private Instruments instrument;
+    /**
+     * Método ejecutado antes de persistir la entidad en la base de datos.
+     * Establece la fecha y hora de creación automáticamente.
+     */
+    @PrePersist
+    public void prePersist() {
+        this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
+    }
 
 
 }

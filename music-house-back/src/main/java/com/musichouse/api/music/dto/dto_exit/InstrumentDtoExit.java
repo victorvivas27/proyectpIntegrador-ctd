@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class InstrumentDtoExit {
     private Long idInstrument;
+    private LocalDate creationDate;
     private String name;
     private String description;
     private BigDecimal rentalPrice;
