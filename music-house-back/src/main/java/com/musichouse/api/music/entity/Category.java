@@ -51,5 +51,5 @@ public class Category {
         this.creationDate = LocalDate.now(); // Capturar la fecha y hora actual correctamente
     }
 
-    // Getters y setters (generados automáticamente por Lombok) omitidos para brevedad
+
 }
