@@ -10,27 +10,26 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "CATEGORY")
+@Table(name = "THEME")
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Category {
+public class Theme {
     /**
-     * Identificador único de la categoría.
+     * Identificador único de la temeatica.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_category")
-    private Long idCategory;
+    @Column(name = "id_theme")
+    private Long idTheme;
 
     /**
-     * Nombre de la categoría.
+     * Nombre de la tematica.
      */
-    @Column(name = "category_name", length = 100, unique = true)
-    private String categoryName;
+    @Column(name = "theme_name", length = 100, unique = true)
+    private String themeName;
 
     /**
-     * Descripción de la categoría.
+     * Descripción de la tematica.
      */
     @Column(name = "description", length = 255)
     private String description;

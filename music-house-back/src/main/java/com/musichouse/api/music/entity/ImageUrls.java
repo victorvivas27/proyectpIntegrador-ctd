@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Date;
 
 
 /**
@@ -33,11 +32,6 @@ public class ImageUrls {
      */
     @Column(name = "image_url", length = 255)
     private String imageUrl;
-    /**
-     * Fecha y hora de creación de la categoría.
-     */
-    @Column(name = "creation_date")
-    private LocalDateTime creationDate;
 
     /**
      * Instrumento al que pertenece la imagen.
@@ -47,16 +41,15 @@ public class ImageUrls {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_instrument")
     @ToString.Exclude
-    private Instruments instrument;
-    /**
-     * Método ejecutado antes de persistir la entidad en la base de datos.
-     * Establece la fecha y hora de creación automáticamente.
-     */
-    @PrePersist
-    public void prePersist() {
-        // Capturar la fecha y hora actual en la zona horaria de Chile
-        this.creationDate = LocalDateTime.now(ZoneId.of("America/Santiago"));
-    }
+    private Instrument instrument;
 
+    /**
+     * Anotación que marca el campo como una fecha de creación automática.
+     * Hibernate asigna automáticamente la fecha y hora actual al insertar la entidad en la base de datos.
+     */
+    @CreationTimestamp
+    @Temporal(TemporalType.DATE)
+    @Column(name = "regist_date")
+    private Date registDate;
 
 }

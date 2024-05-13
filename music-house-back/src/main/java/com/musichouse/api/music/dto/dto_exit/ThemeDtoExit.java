@@ -5,23 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class InstrumentDtoExit {
-    private Long idInstrument;
+public class ThemeDtoExit {
+    private Long idTheme;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registDate;
-    private String name;
+    private String themeName;
     private String description;
-    private String measures;
-    private BigDecimal weight;
-    private BigDecimal rentalPrice;
-    private CategoryDtoExit category;
-    private ThemeDtoExit theme;
-    private List<ImagesUrlsDtoExit> imageUrls;
+
 }

@@ -4,6 +4,7 @@ import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 import com.musichouse.api.music.entity.Category;
+import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.exception.CategoryAssociatedException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.CategoryInterface;
@@ -57,7 +58,7 @@ public class CategoryService implements CategoryInterface {
     public CategoryDtoExit updateCategory(CategoryDtoModify categoryDtoModify) throws ResourceNotFoundException {
         Category categoryToUpdate = categoryRepository.findById(categoryDtoModify.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + categoryDtoModify.getIdCategory() + " not found"));
-        categoryToUpdate.setCategoryName(categoryDtoModify.getName());
+        categoryToUpdate.setCategoryName(categoryDtoModify.getCategoryName());
         categoryToUpdate.setDescription(categoryDtoModify.getDescription());
         categoryRepository.save(categoryToUpdate);
         return mapper.map(categoryToUpdate, CategoryDtoExit.class);
@@ -67,11 +68,11 @@ public class CategoryService implements CategoryInterface {
     public void deleteCategory(Long idCategory) throws ResourceNotFoundException, CategoryAssociatedException {
         Category categoryToDelete = categoryRepository.findById(idCategory)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with id " + idCategory + " not found"));
-        /*List<Instruments> instruments = instrumentRepository.findByCategory(categoryToDelete);
+        List<Instrument> instruments = instrumentRepository.findByCategory(categoryToDelete);
         if (!instruments.isEmpty()) {
             throw new CategoryAssociatedException("Cannot delete category with id " + idCategory +
                     " as it is associated with instruments");
-        }*/
+        }
 
         categoryRepository.deleteById(idCategory);
     }

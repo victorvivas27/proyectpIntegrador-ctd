@@ -30,7 +30,7 @@ public class InstrumentController {
                     .body(new ApiResponse<>("Instrumento creado exitosamente.", instrumentDtoExit));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>("El idCategory no se encuentra en la DB", null));
+                    .body(new ApiResponse<>("El idCategory o idTheme no se encuentra en la DB", null));
         }
     }
 

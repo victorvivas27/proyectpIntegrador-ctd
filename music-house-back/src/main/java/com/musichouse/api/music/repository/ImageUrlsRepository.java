@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ImageUrlsRepository extends JpaRepository<ImageUrls, Long> {
     @Modifying
     @Query("DELETE FROM ImageUrls i WHERE i.idImage = :idImage AND i.instrument.idInstrument = :idInstrument")
     void deleteImageByIdAndInstrumentId(Long idImage, Long idInstrument);
+
 
 }
