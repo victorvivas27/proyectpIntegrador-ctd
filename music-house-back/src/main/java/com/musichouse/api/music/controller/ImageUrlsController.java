@@ -22,7 +22,7 @@ public class ImageUrlsController {
 
     private final ImageUrlsService imageUrlsService;
 
-    @PostMapping("/addImage")
+    @PostMapping("/addimage")
     public ResponseEntity<ApiResponse<ImagesUrlsDtoExit>> createImageUrls(@RequestBody @Valid ImageUrlsDtoEntrance imageUrlsDtoEntrance) {
         try {
             ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.addImageUrls(imageUrlsDtoEntrance);

@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageUrlsDtoEntrance {
+    @NotNull(message = "El id del instrumento es obligatorio")
+    private Long idInstrument;
     @NotBlank(message = "La URL de la imagen no puede estar vacía")
     @Size(max = 255, message = "La longitud máxima de la URL de la imagen es de 255 caracteres")
     private String imageUrl;
-    @NotNull(message = "El id del instrumento es obligatorio")
-    private Long idInstrument;
+
 }

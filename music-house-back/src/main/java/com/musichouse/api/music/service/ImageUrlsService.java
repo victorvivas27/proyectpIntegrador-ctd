@@ -4,7 +4,7 @@ import com.musichouse.api.music.dto.dto_entrance.ImageUrlsDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ImagesUrlsDtoExit;
 import com.musichouse.api.music.dto.dto_modify.ImageUrlsDtoModify;
 import com.musichouse.api.music.entity.ImageUrls;
-import com.musichouse.api.music.entity.Instruments;
+import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.ImageUrlsInterface;
 import com.musichouse.api.music.repository.ImageUrlsRepository;
@@ -16,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -33,16 +35,19 @@ public class ImageUrlsService implements ImageUrlsInterface {
         if (instrumentId == null) {
             throw new IllegalArgumentException("El ID del instrumento no puede ser nulo");
         }
-        Instruments instrument = instrumentRepository.findById(instrumentId)
+        Instrument instrument = instrumentRepository.findById(instrumentId)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
         ImageUrls image = new ImageUrls();
         image.setImageUrl(imageUrlsDtoEntrance.getImageUrl());
         image.setInstrument(instrument);
         ImageUrls savedImage = imageUrlsRepository.save(image);
+        Date currentDate = new Date();
         Long idImage = savedImage.getIdImage();
         ImagesUrlsDtoExit imageDtoExit = new ImagesUrlsDtoExit();
         imageDtoExit.setIdImage(idImage);
+        imageDtoExit.setRegistDate(currentDate);
         imageDtoExit.setImageUrl(savedImage.getImageUrl());
+        imageDtoExit.setIdInstrument(instrumentId);
         return imageDtoExit;
     }
 
@@ -73,9 +78,16 @@ public class ImageUrlsService implements ImageUrlsInterface {
 
     @Override
     public void deleteImageUrls(Long idInstrument, Long idImage) throws ResourceNotFoundException {
-        Instruments instrument = instrumentRepository.findById(idInstrument)
+        // Verificar si el instrumento existe
+        Instrument instrument = instrumentRepository.findById(idInstrument)
                 .orElseThrow(() -> new ResourceNotFoundException("Instrumento no encontrado con ID " + idInstrument));
-        imageUrlsRepository.deleteImageByIdAndInstrumentId(idImage, idInstrument);
 
+        // Verificar si la imagen existe antes de eliminarla
+        Optional<ImageUrls> image = imageUrlsRepository.findById(idImage);
+        if (image.isPresent() && image.get().getInstrument().getIdInstrument().equals(idInstrument)) {
+            imageUrlsRepository.deleteImageByIdAndInstrumentId(idImage, idInstrument);
+        } else {
+            throw new ResourceNotFoundException("Imagen no encontrada con ID " + idImage);
+        }
     }
 }
