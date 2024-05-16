@@ -1,6 +1,8 @@
 package com.musichouse.api.music.service;
 
+import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
+import com.musichouse.api.music.dto.dto_exit.UserAdminDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.Role;
@@ -37,10 +39,11 @@ public class UserService implements UserInterface {
 
 
     @Transactional
-    public UserDtoExit createUserWithRole(UserDtoEntrance userDtoEntrance, String roleName) throws DataIntegrityViolationException {
+    @Override
+    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException {
         User user = mapper.map(userDtoEntrance, User.class);
-        Role role = rolRepository.findByRol(roleName)
-                .orElseGet(() -> rolRepository.save(new Role(roleName)));
+        Role role = rolRepository.findByRol("USER")
+                .orElseGet(() -> rolRepository.save(new Role("USER")));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
@@ -50,11 +53,24 @@ public class UserService implements UserInterface {
         return mapper.map(userSaved, UserDtoExit.class);
     }
 
+    @Transactional
+    @Override
+    public UserAdminDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance)throws DataIntegrityViolationException {
+        User user = mapper.map(userAdminDtoEntrance, User.class);
+        Role role = rolRepository.findByRol("ADMIN")
+                .orElseGet(() -> rolRepository.save(new Role("ADMIN")));
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+        User userSaved = userRepository.save(user);
+        return mapper.map(userSaved, UserAdminDtoExit.class);
+    }
+
     @Override
     public List<UserDtoExit> getAllUser() {
         List<UserDtoExit> userDtoExits = userRepository.findAll().stream()
                 .map(user -> mapper.map(user, UserDtoExit.class)).toList();
-        return userDtoExits;
+        return userDtoExits ;
     }
 
     @Override
@@ -96,13 +112,4 @@ public class UserService implements UserInterface {
         }
     }
 
-    @Transactional
-    public UserDtoExit createUserAdmin(UserDtoEntrance userDtoEntrance) {
-        return createUserWithRole(userDtoEntrance, "ADMIN");
-    }
-
-    @Transactional
-    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) {
-        return createUserWithRole(userDtoEntrance, "USER");
-    }
 }

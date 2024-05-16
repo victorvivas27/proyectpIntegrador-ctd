@@ -1,5 +1,6 @@
 package com.musichouse.api.music.controller;
 
+import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
@@ -22,19 +23,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/create/admin")
-    public ResponseEntity<?> createUserAdmin(@RequestBody @Valid UserDtoEntrance userDtoEntrance) {
-        try {
-            UserDtoExit createdUser = userService.createUserWithRole(userDtoEntrance, "ADMIN");
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Usuario creado con éxito.", createdUser));
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
-        }
-    }
+
 
     @GetMapping("/all")
     public ResponseEntity<?> allUser() {

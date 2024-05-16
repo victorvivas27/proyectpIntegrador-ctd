@@ -9,11 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDtoEntrance {
-
+public class UserAdminDtoEntrance {
     @NotNull(message = "El nombre es obligatorio")
     @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     private String name;
@@ -30,11 +30,5 @@ public class UserDtoEntrance {
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
-    @NotNull(message = "El campo addresses debe estar presente y no puede estar vacío")
-    @Valid
-    private List<AddressDtoEntrance> addresses;
 
-    @Valid
-    @NotNull(message = "El campo phones debe estar presente y no puede estar vacío")
-    private List<PhoneDtoEntrance> phones;
 }

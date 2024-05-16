@@ -1,20 +1,16 @@
 package com.musichouse.api.music.controller;
 
 import com.musichouse.api.music.dto.dto_entrance.AddressAddDtoEntrance;
-import com.musichouse.api.music.dto.dto_entrance.AddressDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.AddressDtoExit;
-import com.musichouse.api.music.dto.dto_exit.ImagesUrlsDtoExit;
-import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.AddressDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.AddressService;
 import com.musichouse.api.music.util.ApiResponse;
+import com.mysql.cj.log.Log;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +23,7 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    /*@PostMapping("/add-address")
+    @PostMapping("/add-address")
     public ResponseEntity<?> createAddress(@Valid @RequestBody AddressAddDtoEntrance addressAddDtoEntrance) {
         try {
             AddressDtoExit createdAddress = addressService.addAddress(addressAddDtoEntrance);
@@ -39,7 +35,7 @@ public class AddressController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
         }
-    }*/
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<?>> allAddress() {
@@ -59,14 +55,14 @@ public class AddressController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateAddress(@Validated @RequestBody AddressDtoModify addressDtoModify) {
+    public ResponseEntity<?> updateAddress(@Valid @RequestBody AddressDtoModify addressDtoModify) {
         try {
-            AddressDtoExit updatedAddress = addressService.updateAddress(addressDtoModify);
-            return ResponseEntity.status(HttpStatus.CREATED).body(updatedAddress);
+            AddressDtoExit addressDtoExit = addressService.updateAddress(addressDtoModify);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Direccion actualizado con éxito.", addressDtoExit));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró la direccion con el ID proporcionado.", null));
         }
     }
 

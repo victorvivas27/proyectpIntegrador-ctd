@@ -1,6 +1,8 @@
 package com.musichouse.api.music.interfaces;
 
+import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
+import com.musichouse.api.music.dto.dto_exit.UserAdminDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -8,7 +10,9 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import java.util.List;
 
 public interface UserInterface {
-    UserDtoExit createUserWithRole(UserDtoEntrance userDtoEntrance, String rol);
+    UserDtoExit createUser(UserDtoEntrance userDtoEntrance);
+
+    UserAdminDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance);
 
     List<UserDtoExit> getAllUser();
 

@@ -18,9 +18,11 @@ public class CategoryDtoModify {
     @NotNull(message = "El idCategory  es obligatorio")
     @Positive(message = "El idInstrument debe ser un número positivo")
     private Long idCategory;
+
     @NotBlank(message = "El nombre de la categoría es obligatorio")
     @Size(max = 100, message = "El nombre de la categoría debe tener como máximo {max} caracteres")
     private String categoryName;
+
     @Size(max = 255, message = "La descripción de la categoría debe tener como máximo {max} caracteres")
     @NotBlank(message = "La descripción de la categoría es obligatoria")
     private String description;

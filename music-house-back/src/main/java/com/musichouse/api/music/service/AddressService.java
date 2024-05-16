@@ -1,9 +1,7 @@
 package com.musichouse.api.music.service;
 
 import com.musichouse.api.music.dto.dto_entrance.AddressAddDtoEntrance;
-import com.musichouse.api.music.dto.dto_entrance.AddressDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.AddressDtoExit;
-import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.AddressDtoModify;
 import com.musichouse.api.music.entity.Address;
 import com.musichouse.api.music.entity.User;
@@ -19,17 +17,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class AddressService implements AddressInterface {
     private final static Logger LOGGER = LoggerFactory.getLogger(AddressService.class);
     private final AddressRepository addressRepository;
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final ModelMapper mapper;
 
-    /*@Override
+    @Override
     public AddressDtoExit addAddress(AddressAddDtoEntrance addressAddDtoEntrance) throws ResourceNotFoundException {
         Long userId = addressAddDtoEntrance.getIdUser();
         if (userId == null) {
@@ -51,13 +48,13 @@ public class AddressService implements AddressInterface {
         addressDtoExit = mapper.map(addressSave, AddressDtoExit.class);
         addressDtoExit.setIdUser(userId);
         return addressDtoExit;
-    }*/
+    }
 
     @Override
     public List<AddressDtoExit> getAllAddress() {
         List<AddressDtoExit> addressDtoExits = addressRepository.findAll().stream()
                 .map(address -> mapper.map(address, AddressDtoExit.class)).toList();
-        return  addressDtoExits;
+        return addressDtoExits;
 
     }
 
@@ -82,22 +79,28 @@ public class AddressService implements AddressInterface {
         addressToUpdate.setNumber(addressDtoModify.getNumber());
         addressToUpdate.setCity(addressDtoModify.getCity());
         addressToUpdate.setState(addressDtoModify.getState());
-        addressToUpdate.setCountry(addressDtoModify.getStreet());
+        addressToUpdate.setCountry(addressDtoModify.getCountry());
         addressRepository.save(addressToUpdate);
         return mapper.map(addressToUpdate, AddressDtoExit.class);
     }
 
     @Override
     public void deleteAddress(Long idAddress) throws ResourceNotFoundException {
-        Optional<Address> addressOptional = addressRepository.findById(idAddress);
-        if (addressOptional.isPresent()) {
-            Address address = addressOptional.get();
-            //usuario.getRoles().clear();
-            addressRepository.save(address);
-            addressRepository.deleteById(idAddress);
-        } else {
-            throw new ResourceNotFoundException("User not found with id: " + idAddress);
+        Address addressToDelete = addressRepository.findById(idAddress)
+                .orElseThrow(() -> new ResourceNotFoundException("Address with id " + idAddress + " not found"));
+        User user = addressToDelete.getUser();
+        if (user != null) {
+            user.getAddresses().remove(addressToDelete);
+            userRepository.save(user);
         }
+        addressRepository.deleteById(idAddress);
 
     }
 }
+
+
+
+
+
+
+

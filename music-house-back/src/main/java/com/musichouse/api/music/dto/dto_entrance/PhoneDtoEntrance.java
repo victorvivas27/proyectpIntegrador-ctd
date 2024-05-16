@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhoneDtoEntrance {
-
-
     @Pattern(regexp = "^\\+?[0-9]+([-]?[0-9]+)*$", message = "El número de teléfono debe tener un formato válido")
     @NotNull(message = "El número de teléfono es obligatorio")
     private String phoneNumber;

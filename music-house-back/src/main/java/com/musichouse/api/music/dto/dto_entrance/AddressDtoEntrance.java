@@ -15,6 +15,7 @@ public class AddressDtoEntrance {
     @Size(min = 2, max = 100, message = "La calle debe tener entre {min} y {max} caracteres")
     @NotNull(message = "La calle es obligatoria")
     private String street;
+
     @PositiveOrZero(message = "El número debe ser positivo o cero")
     @NotNull(message = "El número es obligatorio")
     private Long number;

@@ -12,8 +12,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class PhoneDtoExit {
     private Long idPhone;
+    private Long idUser;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registDate;
-    //private Long idUser;
     private String phoneNumber;
 }

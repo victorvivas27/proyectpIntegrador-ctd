@@ -11,7 +11,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDtoExit {
-
     private Long idCategory;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registDate;

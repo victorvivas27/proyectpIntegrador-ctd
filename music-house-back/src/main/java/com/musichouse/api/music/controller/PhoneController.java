@@ -1,6 +1,6 @@
 package com.musichouse.api.music.controller;
 
-import com.musichouse.api.music.dto.dto_entrance.PhoneDtoEntrance;
+import com.musichouse.api.music.dto.dto_entrance.PhoneAddDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.PhoneDtoExit;
 import com.musichouse.api.music.dto.dto_modify.PhoneDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -21,29 +21,47 @@ import java.util.List;
 public class PhoneController {
     private final PhoneService phoneService;
 
-    @PostMapping("/create")
-    public ResponseEntity<ApiResponse<PhoneDtoExit>> createPhone(@Valid @RequestBody PhoneDtoEntrance phoneDtoEntrance) {
-        PhoneDtoExit phoneDtoExit = phoneService.createPhone(phoneDtoEntrance);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>("Telefono creado exitosamente.", phoneDtoExit));
+    @PostMapping("/add-phone")
+    public ResponseEntity<ApiResponse<?>> addPhone(@Valid @RequestBody PhoneAddDtoEntrance phoneAddDtoEntrance) throws ResourceNotFoundException {
+        try {
+            PhoneDtoExit createPhone = phoneService.addPhone(phoneAddDtoEntrance);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Telefono creado con éxito.", createPhone));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("No se encontró el usuario con el ID proporcionado.", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+        }
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PhoneDtoExit>> allPhone() {
+    public ResponseEntity<List<?>> allPhone() {
         List<PhoneDtoExit> allPhone = phoneService.getAllPhone();
         return new ResponseEntity<>(allPhone, HttpStatus.OK);
     }
 
     @GetMapping("/search/{idPhone}")
-    public ResponseEntity<PhoneDtoExit> searchPhoneById(@PathVariable Long idPhone) throws ResourceNotFoundException {
-        PhoneDtoExit foundPhone = phoneService.getPhoneById(idPhone);
-        return new ResponseEntity<>(foundPhone, HttpStatus.OK);
+    public ResponseEntity<?> searchPhoneById(@PathVariable Long idPhone) throws ResourceNotFoundException {
+        try {
+            PhoneDtoExit foundPhone = phoneService.getPhoneById(idPhone);
+            return ResponseEntity.ok(new ApiResponse<>("Telefono encontrado con exito.", foundPhone));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró el telefono con el ID proporcionado.", null));
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<PhoneDtoExit> updatepPhone(@Valid @RequestBody PhoneDtoModify phoneDtoModify) throws ResourceNotFoundException {
-        PhoneDtoExit updatedPhone = phoneService.updatePhone(phoneDtoModify);
-        return new ResponseEntity<>(updatedPhone, HttpStatus.CREATED);
+    public ResponseEntity<?> updatepPhone(@Valid @RequestBody PhoneDtoModify phoneDtoModify) throws ResourceNotFoundException {
+        try {
+            PhoneDtoExit phoneDtoExit = phoneService.updatePhone(phoneDtoModify);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Telefono actualizado con éxito.", phoneDtoExit));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró El telefono con el ID proporcionado.", null));
+        }
     }
 
     @DeleteMapping("/delete/{idPhone}")
