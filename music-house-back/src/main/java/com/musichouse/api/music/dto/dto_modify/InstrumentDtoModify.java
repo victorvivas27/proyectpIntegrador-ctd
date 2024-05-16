@@ -1,24 +1,20 @@
 package com.musichouse.api.music.dto.dto_modify;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.musichouse.api.music.entity.ImageUrls;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InstrumentDtoModify {
-    @NotNull(message = "El id del instrumento es obligatorio")
+    @NotNull(message = "El idInstrument  es obligatorio")
+    @Positive(message = "El idInstrument debe ser un número positivo")
     private Long idInstrument;
     @NotBlank(message = "El nombre del instrumento es obligatorio")
     @Size(max = 100, message = "El nombre del instrumento debe tener como máximo {max} caracteres")
