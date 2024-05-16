@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Data
-@Table(name = "INSTRUMENT")
+@Table(name = "INSTRUMENTS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Instrument {
@@ -51,7 +51,7 @@ public class Instrument {
     /**
      * Altura del instrumento en centímetros.
      */
-    @Column(name = "measures", nullable = false,length = 100)
+    @Column(name = "measures", nullable = false, length = 100)
     private String measures;
 
     /**
