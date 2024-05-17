@@ -2,7 +2,6 @@ package com.musichouse.api.music.service;
 
 import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
-import com.musichouse.api.music.dto.dto_exit.UserAdminDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.Role;
@@ -55,7 +54,7 @@ public class UserService implements UserInterface {
 
     @Transactional
     @Override
-    public UserAdminDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance)throws DataIntegrityViolationException {
+    public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance)throws DataIntegrityViolationException {
         User user = mapper.map(userAdminDtoEntrance, User.class);
         Role role = rolRepository.findByRol("ADMIN")
                 .orElseGet(() -> rolRepository.save(new Role("ADMIN")));
@@ -63,7 +62,7 @@ public class UserService implements UserInterface {
         roles.add(role);
         user.setRoles(roles);
         User userSaved = userRepository.save(user);
-        return mapper.map(userSaved, UserAdminDtoExit.class);
+        return mapper.map(userSaved, UserDtoExit.class);
     }
 
     @Override
