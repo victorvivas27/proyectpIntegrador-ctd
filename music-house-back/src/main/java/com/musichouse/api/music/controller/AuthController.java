@@ -2,7 +2,6 @@ package com.musichouse.api.music.controller;
 
 import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
-import com.musichouse.api.music.dto.dto_exit.UserAdminDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -23,7 +22,7 @@ public class AuthController {
     @PostMapping("/create/admin")
     public ResponseEntity<?> createUserAdmin(@RequestBody @Valid UserAdminDtoEntrance userAdminDtoEntrance) {
         try {
-            UserAdminDtoExit createdUser = userService.createUserAdmin(userAdminDtoEntrance);
+            UserDtoExit createdUser = userService.createUserAdmin(userAdminDtoEntrance);
             return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Usuario  admin creado con éxito.", createdUser));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
