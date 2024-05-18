@@ -20,7 +20,8 @@ public class UserDtoExit {
     private String lastName;
     private String email;
     private String password;
-    private List <Role> roles;
+    private TokenDtoSalida token;
+    private List<Role> roles;
     private List<AddressDtoExit> addresses;
     private List<PhoneDtoExit> phones;
 }

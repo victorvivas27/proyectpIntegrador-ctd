@@ -10,15 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAdminDtoEntrance {
-
-    @NotNull(message = "El nombre es obligatorio")
-    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
-    private String name;
-
-    @NotNull(message = "El apellido es obligatorio")
-    @Size(min = 2, max = 50, message = "El apellido debe tener entre 2 y 50 caracteres")
-    private String lastName;
+public class LoginDtoEntrance {
 
     @NotNull(message = "El email es obligatorio")
     @Email(message = "El email debe ser válido")
@@ -27,6 +19,4 @@ public class UserAdminDtoEntrance {
     @NotNull(message = "La contraseña es obligatoria")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
-
-
 }

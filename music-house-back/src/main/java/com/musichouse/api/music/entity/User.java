@@ -1,20 +1,23 @@
 package com.musichouse.api.music.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Representa una entidad de usuario en la aplicación de Music House.
  */
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USERS")
@@ -24,7 +27,7 @@ import java.util.Set;
  * phones y roles. Esto se hace para evitar problemas de recursión infinita en las operaciones de igualdad y hashCode.
  */
 @EqualsAndHashCode(exclude = {"addresses", "phones", "roles"})
-public class User {
+public class User implements UserDetails {
     /**
      * Identificador único para el usuario.
      */
@@ -47,7 +50,7 @@ public class User {
 
     /**
      * El correo electrónico del usuario (usado para inicio de sesión y notificaciones).
-     *
+     * <p>
      * Debe ser único en la base de datos para evitar duplicados.
      */
     @Column(name = "email", nullable = false, length = 100, unique = true)
@@ -61,7 +64,7 @@ public class User {
 
     /**
      * Las direcciones del usuario.
-     *
+     * <p>
      * La propiedad orphanRemoval = true indica que cuando se elimina una dirección del usuario,
      * también se elimina de la base de datos de forma automática para mantener la integridad referencial.
      */
@@ -70,7 +73,7 @@ public class User {
 
     /**
      * Los números de teléfono del usuario.
-     *
+     * <p>
      * La propiedad orphanRemoval = true indica que cuando se elimina un número de teléfono del usuario,
      * también se elimina de la base de datos de forma automática para mantener la integridad referencial.
      */
@@ -81,11 +84,10 @@ public class User {
      * Roles asignados al usuario.
      *
      * @ManyToMany: Relación muchos a muchos entre User y Role. Un usuario puede tener varios roles y viceversa.
-     *
      * @JoinTable: Tabla de unión para la relación, define las columnas user_id y rol_id.
-     *
+     * <p>
      * fetch = FetchType.EAGER: Carga ansiosa de roles al cargar un usuario.
-     *
+     * <p>
      * cascade = CascadeType.ALL: Operaciones en cascada para roles asociados (guardar, actualizar, eliminar).
      */
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.ALL)
@@ -103,4 +105,36 @@ public class User {
     @Temporal(TemporalType.DATE)
     @Column(name = "regist_date")
     private Date registDate;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles
+                .stream().map(role -> new SimpleGrantedAuthority(role.getRol()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

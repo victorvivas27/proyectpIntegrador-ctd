@@ -1,8 +1,12 @@
 package com.musichouse.api.music.controller;
 
+import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
+import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
+import com.musichouse.api.music.exception.ResourceNotFoundException;
+import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
@@ -10,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/create/admin")
     public ResponseEntity<?> createUserAdmin(@RequestBody @Valid UserAdminDtoEntrance userAdminDtoEntrance) {
@@ -32,6 +38,7 @@ public class AuthController {
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
         }
     }
+
     @PostMapping("/create/user")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserDtoEntrance userDtoEntrance) {
         try {
@@ -40,6 +47,23 @@ public class AuthController {
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDtoEntrance loginDtoEntrance) {
+        try {
+            TokenDtoSalida tokenDtoSalida = userService.loginUserAndCheckEmail(loginDtoEntrance);
+            return ResponseEntity.ok(tokenDtoSalida);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>("Autenticación fallida. Verifique sus credenciales.", null));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("Usuario no encontrado con el correo electrónico proporcionado.", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));

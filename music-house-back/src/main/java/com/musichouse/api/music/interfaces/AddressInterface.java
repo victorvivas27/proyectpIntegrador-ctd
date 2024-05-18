@@ -1,11 +1,9 @@
 package com.musichouse.api.music.interfaces;
 
 import com.musichouse.api.music.dto.dto_entrance.AddressAddDtoEntrance;
-import com.musichouse.api.music.dto.dto_entrance.AddressDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.AddressDtoExit;
 import com.musichouse.api.music.dto.dto_modify.AddressDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
-import com.mysql.cj.log.Log;
 
 import java.util.List;
 
