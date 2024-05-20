@@ -1,7 +1,9 @@
 package com.musichouse.api.music.security;
 
+import com.google.protobuf.UninitializedMessageException;
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
+import com.musichouse.api.music.exception.UnauthorizedException;
 import com.musichouse.api.music.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +30,7 @@ public class AuthService {
      * @return Objeto DTO que contiene el token generado en caso de inicio de sesión exitoso.
      * @throws AccessDeniedException Si el usuario no tiene los permisos requeridos para iniciar sesión.
      */
-    public TokenDtoSalida login(LoginDtoEntrance loginDtoEntrance) {
+    public TokenDtoSalida login(LoginDtoEntrance loginDtoEntrance) throws UnauthorizedException {
         // Autenticar las credenciales del usuario
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDtoEntrance.getEmail(),
@@ -43,7 +47,7 @@ public class AuthService {
             return TokenDtoSalida.builder().token(token).build();
         } else {
             // Lanzar excepción si el usuario no tiene permisos suficientes
-            throw new AccessDeniedException("No tiene permisos de administrador");
+            throw new UnauthorizedException("No tiene permisos de administrador");
         }
     }
 }

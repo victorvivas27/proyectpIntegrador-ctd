@@ -7,6 +7,7 @@ import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +45,15 @@ public class UserController {
             UserDtoExit userDtoExit = userService.updateUser(userDtoModify);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>("Usuario actualizado con éxito.", userDtoExit));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>("No se encontró el usuario con el ID proporcionado.", null));
         }
     }
+
 
     @DeleteMapping("/delete/{idUser}")
     public ResponseEntity<?> deleteUser(@PathVariable Long idUser) {

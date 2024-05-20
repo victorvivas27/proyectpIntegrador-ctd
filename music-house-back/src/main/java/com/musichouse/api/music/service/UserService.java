@@ -130,10 +130,15 @@ public class UserService implements UserInterface {
         userToUpdate.setLastName(userDtoModify.getLastName());
         userToUpdate.setEmail(userDtoModify.getEmail());
         userToUpdate.setPassword(userDtoModify.getPassword());
+        if (!userToUpdate.getPassword().isEmpty()) {
+            String contraseñaEncriptada = passwordEncoder.encode(userToUpdate.getPassword());
+            userToUpdate.setPassword(contraseñaEncriptada);
+        }
         userRepository.save(userToUpdate);
         return mapper.map(userToUpdate, UserDtoExit.class);
 
     }
+
 
     @Override
     public void deleteUser(Long idUser) throws ResourceNotFoundException {

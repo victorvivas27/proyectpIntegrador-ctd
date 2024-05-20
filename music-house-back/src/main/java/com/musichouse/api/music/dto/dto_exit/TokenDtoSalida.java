@@ -15,6 +15,7 @@ import java.util.List;
 public class TokenDtoSalida {
     private List<Role> roles;
     private String token;
+    @Builder.Default
     private String tokenType = "Bearer ";
 
     // Constructor personalizado que solo toma el token

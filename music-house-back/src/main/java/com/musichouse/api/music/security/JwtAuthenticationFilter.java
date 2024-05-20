@@ -1,7 +1,5 @@
 package com.musichouse.api.music.security;
 
-import com.musichouse.api.music.exception.UnauthorizedException;
-import com.musichouse.api.music.util.ApiResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,34 +32,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
-            // Extraer el token JWT de la solicitud
-            String token = extractTokenFromRequest(request);
-            if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // Obtener el nombre de usuario del token
-                String username = jwtService.getUsernameFromToken(token);
-                // Cargar los detalles del usuario desde el servicio de detalles de usuario
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                // Verificar si el token es válido para el usuario
-                if (jwtService.isTokenValid(token, userDetails)) {
-                    // Autenticar al usuario en Spring Security
-                    authenticateUser(userDetails, request);
-                }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Extraer el token JWT de la solicitud
+        String token = extractTokenFromRequest(request);
+        if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Obtener el nombre de usuario del token
+            String username = jwtService.getUsernameFromToken(token);
+            // Cargar los detalles del usuario desde el servicio de detalles de usuario
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // Verificar si el token es válido para el usuario
+            if (jwtService.isTokenValid(token, userDetails)) {
+                // Autenticar al usuario en Spring Security
+                authenticateUser(userDetails, request);
             }
-            filterChain.doFilter(request, response);
-        } catch (UnauthorizedException ex) {
-            // Si ocurre un error durante la autenticación, se genera una excepción personalizada
-            LOGGER.error("Error al autenticar el usuario: {}", ex.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write(new ApiResponse<>(ex.getMessage(), null).toString());
-        } catch (Exception ex) {
-            // Si ocurre un error diferente durante la autenticación
-            LOGGER.error("Error inesperado durante la autenticación: {}", ex.getMessage());
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write(new ApiResponse<>("Error inesperado durante la autenticación", null).toString());
         }
+        filterChain.doFilter(request, response);
     }
 
     /**
