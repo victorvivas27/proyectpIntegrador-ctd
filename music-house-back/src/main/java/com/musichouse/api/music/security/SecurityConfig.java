@@ -33,11 +33,17 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(HttpMethod.POST, "api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user/all").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/user/delete/{idUser}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user/search/{idUser}").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/usuario/modificar").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/user/update").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/user/all").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/user/search/{idUser}").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/user/update").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/user/delete/{idUser}").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/category/all").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/theme/all").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/instrument/all").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/category/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/theme/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/instrument/**").hasAnyAuthority("ADMIN")
+
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

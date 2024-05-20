@@ -33,10 +33,8 @@ public class InstrumentService implements InstrumentInterface {
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
-
         Theme theme = themeRepository.findById(instrumentsDtoEntrance.getIdTheme())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la tematica con el ID proporcionado"));
-
         Instrument instrument = new Instrument();
         instrument.setName(instrumentsDtoEntrance.getName());
         instrument.setDescription(instrumentsDtoEntrance.getDescription());
@@ -45,7 +43,6 @@ public class InstrumentService implements InstrumentInterface {
         instrument.setMeasures(instrumentsDtoEntrance.getMeasures());
         instrument.setCategory(category);
         instrument.setTheme(theme);
-
         List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
                 .map(url -> {
                     ImageUrls imageUrl = new ImageUrls();
@@ -101,5 +98,4 @@ public class InstrumentService implements InstrumentInterface {
             throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
         }
     }
-
 }

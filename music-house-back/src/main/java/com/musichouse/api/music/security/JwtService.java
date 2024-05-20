@@ -1,5 +1,6 @@
 package com.musichouse.api.music.security;
 
+import com.musichouse.api.music.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -33,8 +35,19 @@ public class JwtService {
      * @return Token JWT generado.
      */
     public String generateToken(UserDetails userDetails) {
+        JwtClaims jwtClaims = JwtClaims.builder()
+                .id(UUID.randomUUID().toString())
+                .role(userDetails.getAuthorities().stream().findFirst().get().getAuthority())
+                .name(((User) userDetails).getName())
+                .lastName(((User) userDetails).getLastName())
+                .build();
+
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", userDetails.getAuthorities().stream().findFirst().get().getAuthority());
+        claims.put("id", jwtClaims.getId());
+        claims.put("role", jwtClaims.getRole());
+        claims.put("name", jwtClaims.getName());
+        claims.put("lastName", jwtClaims.getLastName());
+
         return generateToken(claims, userDetails);
     }
 
