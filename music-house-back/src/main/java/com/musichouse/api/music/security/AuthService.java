@@ -1,6 +1,5 @@
 package com.musichouse.api.music.security;
 
-import com.google.protobuf.UninitializedMessageException;
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
 import com.musichouse.api.music.exception.UnauthorizedException;
@@ -12,8 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
