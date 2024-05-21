@@ -1,5 +1,6 @@
 package com.musichouse.api.music.security;
 
+import com.musichouse.api.music.util.RoleConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,17 +33,24 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers(HttpMethod.POST, "api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user/all").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/user/search/{idUser}").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/user/update").hasAnyAuthority("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/user/delete/{idUser}").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/category/all").hasAnyAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, "/api/theme/all").hasAnyAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, "/api/instrument/all").hasAnyAuthority("USER")
-                        .requestMatchers(HttpMethod.POST, "/api/category/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/theme/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/instrument/**").hasAnyAuthority("ADMIN")
+                        // Rutas públicas
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        // Rutas de usuario (todas las operaciones)
+                        .requestMatchers("/api/user/**").permitAll()
+                        // Rutas de dirección (todas las operaciones)
+                        .requestMatchers("/api/address/**").permitAll()
+                        // Rutas de teléfono (todas las operaciones)
+                        .requestMatchers("/api/phone/**").permitAll()
+                        // Rutas de temas (todas las operaciones)
+                        .requestMatchers("/api/theme/**").permitAll()
+                        // Rutas de categorías (todas las operaciones)
+                        .requestMatchers("/api/category/**").permitAll()
+                        // Rutas de instrumentos (todas las operaciones)
+                        .requestMatchers("/api/instrument/**").permitAll()
+                        // Rutas de instrumentos (PUT) solo para ADMIN
+                        .requestMatchers(HttpMethod.PUT, "/api/instrument/update").hasAnyAuthority(RoleConstants.ADMIN)
+                        // Rutas de URLs de imagen (todas las operaciones)
+                        .requestMatchers("/api/imageurls/**").permitAll()
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager

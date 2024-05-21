@@ -3,7 +3,6 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.ThemeDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ThemeDtoExit;
 import com.musichouse.api.music.dto.dto_modify.ThemeDtoModify;
-import com.musichouse.api.music.exception.CategoryAssociatedException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.ThemeService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -45,27 +44,39 @@ public class ThemeController {
     }
 
     @GetMapping("/search/{idTheme}")
-    public ResponseEntity<ThemeDtoExit> searchThemeById(@PathVariable Long idTheme) throws ResourceNotFoundException {
-        ThemeDtoExit themeDtoExit = themeService.getThemeById(idTheme);
-        return ResponseEntity.ok(themeDtoExit);
+    public ResponseEntity<?> searchThemeById(@PathVariable Long idTheme) {
+        try {
+            ThemeDtoExit foundTheme = themeService.getThemeById(idTheme);
+            return ResponseEntity.ok(new ApiResponse<>("Tematica encontrada.", foundTheme));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró la tematica con el ID proporcionado.", null));
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ThemeDtoExit> updateTheme(@RequestBody @Valid ThemeDtoModify themeDtoModify) throws ResourceNotFoundException {
-        ThemeDtoExit themeDtoExit = themeService.updateTheme(themeDtoModify);
-        return ResponseEntity.ok(themeDtoExit);
+    public ResponseEntity<?> updateTheme(@RequestBody @Valid ThemeDtoModify themeDtoModify) {
+        try {
+            ThemeDtoExit themeDtoExit = themeService.updateTheme(themeDtoModify);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Tematica  actualizada con éxito.", themeDtoModify));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró la tematica con el ID proporcionado.", null));
+        }
     }
 
     @DeleteMapping("/delete/{idTheme}")
-    public ResponseEntity<String> deleteTheme(@PathVariable Long idTheme) {
+    public ResponseEntity<?> deleteTheme(@PathVariable Long idTheme) {
         try {
             themeService.deleteTheme(idTheme);
-            return ResponseEntity.ok("Theme deleted successfully");
+            return ResponseEntity.ok(new ApiResponse<>("Tematica con ID " + idTheme + " eliminada exitosamente.", null));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Theme not found");
-        } catch (CategoryAssociatedException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("La tematica con el ID " + idTheme + " no se encontró.", null));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Cannot delete theme as it is associated with instruments");
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 }

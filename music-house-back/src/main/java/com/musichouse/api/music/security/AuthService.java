@@ -4,6 +4,7 @@ import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
 import com.musichouse.api.music.exception.UnauthorizedException;
 import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.util.RoleConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,7 +39,7 @@ public class AuthService {
 
         // Verificar si el usuario tiene permisos de ADMIN o USER para generar el token
         if (userDetails.getAuthorities().stream().anyMatch(a ->
-                a.getAuthority().equals("ADMIN") || a.getAuthority().equals("USER"))) {
+                a.getAuthority().equals(RoleConstants.ADMIN) || a.getAuthority().equals(RoleConstants.USER))) {
             // Generar el token utilizando JwtService
             String token = jwtService.generateToken(userDetails);
             return TokenDtoSalida.builder().token(token).build();

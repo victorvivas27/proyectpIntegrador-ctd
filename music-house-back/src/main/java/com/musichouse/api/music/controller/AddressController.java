@@ -22,7 +22,7 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    @PostMapping("/add-address")
+    @PostMapping("/add_address")
     public ResponseEntity<?> createAddress(@Valid @RequestBody AddressAddDtoEntrance addressAddDtoEntrance) {
         try {
             AddressDtoExit createdAddress = addressService.addAddress(addressAddDtoEntrance);

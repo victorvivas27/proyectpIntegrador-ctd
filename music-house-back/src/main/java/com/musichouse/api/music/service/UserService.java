@@ -15,6 +15,7 @@ import com.musichouse.api.music.repository.PhoneRepository;
 import com.musichouse.api.music.repository.RolRepository;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.security.JwtService;
+import com.musichouse.api.music.util.RoleConstants;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -53,8 +54,8 @@ public class UserService implements UserInterface {
         User user = mapper.map(userDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
-        Role role = rolRepository.findByRol("USER")
-                .orElseGet(() -> rolRepository.save(new Role("USER")));
+        Role role = rolRepository.findByRol(RoleConstants.USER)
+                .orElseGet(() -> rolRepository.save(new Role(RoleConstants.USER)));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
@@ -73,8 +74,8 @@ public class UserService implements UserInterface {
         User user = mapper.map(userAdminDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
-        Role role = rolRepository.findByRol("ADMIN")
-                .orElseGet(() -> rolRepository.save(new Role("ADMIN")));
+        Role role = rolRepository.findByRol(RoleConstants.ADMIN)
+                .orElseGet(() -> rolRepository.save(new Role(RoleConstants.ADMIN)));
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);

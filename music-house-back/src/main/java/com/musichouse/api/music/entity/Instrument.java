@@ -83,6 +83,13 @@ public class Instrument {
     private List<ImageUrls> imageUrls = new ArrayList<>();
 
     /**
+     * Características del instrumento.
+     */
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "characteristics_id", referencedColumnName = "id_characteristics")
+    private Characteristics characteristics;
+
+    /**
      * Anotación que marca el campo como una fecha de creación automática.
      * Hibernate asigna automáticamente la fecha y hora actual al insertar la entidad en la base de datos.
      */

@@ -1,6 +1,7 @@
 package com.musichouse.api.music.dto.dto_exit;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.musichouse.api.music.entity.Characteristics;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,5 @@ public class InstrumentDtoExit {
     private CategoryDtoExit category;
     private ThemeDtoExit theme;
     private List<ImagesUrlsDtoExit> imageUrls;
+    private Characteristics characteristics;
 }

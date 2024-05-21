@@ -3,7 +3,6 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
-import com.musichouse.api.music.exception.CategoryAssociatedException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.CategoryService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -45,27 +44,39 @@ public class CategoryController {
     }
 
     @GetMapping("/search/{idCategory}")
-    public ResponseEntity<CategoryDtoExit> searchCategoryById(@PathVariable Long idCategory) throws ResourceNotFoundException {
-        CategoryDtoExit categoryDtoExit = categoryService.getCategoryById(idCategory);
-        return ResponseEntity.ok(categoryDtoExit);
+    public ResponseEntity<?> searchCategoryById(@PathVariable Long idCategory) {
+        try {
+            CategoryDtoExit foundCategory = categoryService.getCategoryById(idCategory);
+            return ResponseEntity.ok(new ApiResponse<>("Categoria encontrada.", foundCategory));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró la categoria con el ID proporcionado.", null));
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CategoryDtoExit> updateCategory(@RequestBody @Valid CategoryDtoModify categoryDtoModify) throws ResourceNotFoundException {
-        CategoryDtoExit categoryDtoExit = categoryService.updateCategory(categoryDtoModify);
-        return ResponseEntity.ok(categoryDtoExit);
+    public ResponseEntity<?> updateCategory(@RequestBody @Valid CategoryDtoModify categoryDtoModify) {
+        try {
+            CategoryDtoExit categoryDtoExit = categoryService.updateCategory(categoryDtoModify);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Categoria actualizada con éxito.", categoryDtoExit));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontró la categoria con el ID proporcionado.", null));
+        }
     }
 
     @DeleteMapping("/delete/{idCategory}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long idCategory) {
+    public ResponseEntity<?> deleteCategory(@PathVariable Long idCategory) {
         try {
             categoryService.deleteCategory(idCategory);
-            return ResponseEntity.ok("Category deleted successfully");
+            return ResponseEntity.ok(new ApiResponse<>("Categoria con ID " + idCategory + " eliminada exitosamente.", null));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
-        } catch (CategoryAssociatedException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("La categoria con el ID " + idCategory + " no se encontró.", null));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Cannot delete category as it is associated with instruments");
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 

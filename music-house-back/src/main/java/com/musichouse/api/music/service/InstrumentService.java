@@ -1,12 +1,10 @@
 package com.musichouse.api.music.service;
 
+import com.musichouse.api.music.dto.dto_entrance.CharacteristicDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
-import com.musichouse.api.music.entity.Category;
-import com.musichouse.api.music.entity.ImageUrls;
-import com.musichouse.api.music.entity.Instrument;
-import com.musichouse.api.music.entity.Theme;
+import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
 import com.musichouse.api.music.repository.CategoryRepository;
@@ -33,8 +31,18 @@ public class InstrumentService implements InstrumentInterface {
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(instrumentsDtoEntrance.getIdCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
+
         Theme theme = themeRepository.findById(instrumentsDtoEntrance.getIdTheme())
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la tematica con el ID proporcionado"));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la temática con el ID proporcionado"));
+        CharacteristicDtoEntrance characteristicsDtoEntrance = instrumentsDtoEntrance.getCharacteristic();
+        Characteristics characteristics = new Characteristics();
+        characteristics.setMaterial(characteristicsDtoEntrance.getMaterial());
+        characteristics.setFrets(characteristicsDtoEntrance.getFrets());
+        characteristics.setScaleLength(characteristicsDtoEntrance.getScaleLength());
+        characteristics.setNumberOfStrings(characteristicsDtoEntrance.getNumberOfStrings());
+        characteristics.setTypeOfStrings(characteristicsDtoEntrance.getTypeOfStrings());
+        characteristics.setOriginCountry(characteristicsDtoEntrance.getOriginCountry());
+
         Instrument instrument = new Instrument();
         instrument.setName(instrumentsDtoEntrance.getName());
         instrument.setDescription(instrumentsDtoEntrance.getDescription());
@@ -43,6 +51,8 @@ public class InstrumentService implements InstrumentInterface {
         instrument.setMeasures(instrumentsDtoEntrance.getMeasures());
         instrument.setCategory(category);
         instrument.setTheme(theme);
+        instrument.setCharacteristics(characteristics);
+
         List<ImageUrls> imageUrls = instrumentsDtoEntrance.getImageUrls().stream()
                 .map(url -> {
                     ImageUrls imageUrl = new ImageUrls();
@@ -51,7 +61,6 @@ public class InstrumentService implements InstrumentInterface {
                     return imageUrl;
                 }).toList();
         instrument.setImageUrls(imageUrls);
-
         Instrument instrumentSave = instrumentRepository.save(instrument);
         InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentSave, InstrumentDtoExit.class);
         return instrumentDtoExit;

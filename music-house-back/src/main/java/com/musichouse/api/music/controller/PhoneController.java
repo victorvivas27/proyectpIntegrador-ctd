@@ -21,7 +21,7 @@ import java.util.List;
 public class PhoneController {
     private final PhoneService phoneService;
 
-    @PostMapping("/add-phone")
+    @PostMapping("/add_phone")
     public ResponseEntity<ApiResponse<?>> addPhone(@Valid @RequestBody PhoneAddDtoEntrance phoneAddDtoEntrance) throws ResourceNotFoundException {
         try {
             PhoneDtoExit createPhone = phoneService.addPhone(phoneAddDtoEntrance);

@@ -22,15 +22,15 @@ public class ImageUrlsController {
 
     private final ImageUrlsService imageUrlsService;
 
-    @PostMapping("/addimage")
-    public ResponseEntity<ApiResponse<ImagesUrlsDtoExit>> createImageUrls(@RequestBody @Valid ImageUrlsDtoEntrance imageUrlsDtoEntrance) {
+    @PostMapping("/add_image")
+    public ResponseEntity<ApiResponse<?>> createImageUrls(@RequestBody @Valid ImageUrlsDtoEntrance imageUrlsDtoEntrance) {
         try {
             ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.addImageUrls(imageUrlsDtoEntrance);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>("Imágenes agregadas exitosamente.", imagesUrlsDtoExit));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>("No se encontró la categoría o el instrumento asociado.", null));
+                    .body(new ApiResponse<>("No se encontro  el instrumento con el ID proporcionado.", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
@@ -44,15 +44,26 @@ public class ImageUrlsController {
     }
 
     @GetMapping("/search/{idImage}")
-    public ResponseEntity<ImagesUrlsDtoExit> searchImageUrlsById(@PathVariable Long idImage) throws ResourceNotFoundException {
-        ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.getImageUrlsById(idImage);
-        return ResponseEntity.ok(imagesUrlsDtoExit);
+    public ResponseEntity<?> searchImageUrlsById(@PathVariable Long idImage) {
+        try {
+            ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.getImageUrlsById(idImage);
+            return ResponseEntity.ok(new ApiResponse<>("Imagen Urls encontrada con exito.", imagesUrlsDtoExit));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontro la imagen Urls con el ID proporcionado.", null));
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ImagesUrlsDtoExit> updateImageUrls(@RequestBody @Valid ImageUrlsDtoModify imageUrlsDtoModify) throws ResourceNotFoundException {
-        ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.updateImageUrls(imageUrlsDtoModify);
-        return ResponseEntity.ok(imagesUrlsDtoExit);
+    public ResponseEntity<?> updateImageUrls(@RequestBody @Valid ImageUrlsDtoModify imageUrlsDtoModify) {
+        try {
+            ImagesUrlsDtoExit imagesUrlsDtoExit = imageUrlsService.updateImageUrls(imageUrlsDtoModify);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>("Imagen Urls actualizada con exito.", imagesUrlsDtoExit));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontro la imagen Urls con el ID proporcionado.", null));
+        }
     }
 
     @DeleteMapping("/delete/{idInstrument}/{idImage}")
