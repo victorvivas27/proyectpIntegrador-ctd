@@ -59,7 +59,7 @@ public class InstrumentController {
                     .body(new ApiResponse<>("Instrumento  actualizado con éxito.", instrumentDtoExit));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>("No se encontró el instrumento con el ID proporcionado.", null));
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 

@@ -35,4 +35,9 @@ public class InstrumentDtoModify {
     @PositiveOrZero(message = "El precio de alquiler debe ser positivo o cero")
     private BigDecimal rentalPrice;
 
+    @NotNull(message = "El id de la categoría es obligatorio")
+    private Long idCategory;
+    @NotNull(message = "El id de la tematica es obligatorio")
+    private Long idTheme;
+
 }

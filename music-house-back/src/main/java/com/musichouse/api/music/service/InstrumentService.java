@@ -87,15 +87,22 @@ public class InstrumentService implements InstrumentInterface {
 
     @Override
     public InstrumentDtoExit updateInstrument(InstrumentDtoModify instrumentDtoModify) throws ResourceNotFoundException {
-        Instrument instrumentsToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
+        Category category = categoryRepository.findById(instrumentDtoModify.getIdCategory())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la categoría con el ID proporcionado"));
+        Theme theme = themeRepository.findById(instrumentDtoModify.getIdTheme())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la temática con el ID proporcionado"));
+        Instrument instrumentToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
-        instrumentsToUpdate.setName(instrumentDtoModify.getName());
-        instrumentsToUpdate.setDescription(instrumentDtoModify.getDescription());
-        instrumentsToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
-        instrumentsToUpdate.setWeight(instrumentDtoModify.getWeight());
-        instrumentsToUpdate.setMeasures(instrumentDtoModify.getMeasures());
-        instrumentRepository.save(instrumentsToUpdate);
-        return mapper.map(instrumentsToUpdate, InstrumentDtoExit.class);
+
+        instrumentToUpdate.setName(instrumentDtoModify.getName());
+        instrumentToUpdate.setDescription(instrumentDtoModify.getDescription());
+        instrumentToUpdate.setWeight(instrumentDtoModify.getWeight());
+        instrumentToUpdate.setMeasures(instrumentDtoModify.getMeasures());
+        instrumentToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
+        instrumentToUpdate.setCategory(category);
+        instrumentToUpdate.setTheme(theme);
+        instrumentRepository.save(instrumentToUpdate);
+        return mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
     }
 
     @Override
