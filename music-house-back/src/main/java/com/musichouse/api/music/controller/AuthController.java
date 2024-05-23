@@ -49,7 +49,7 @@ public class AuthController {
                     .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 

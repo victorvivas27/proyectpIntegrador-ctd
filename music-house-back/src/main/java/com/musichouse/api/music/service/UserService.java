@@ -9,6 +9,7 @@ import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.Role;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
+import com.musichouse.api.music.infra.MailManager;
 import com.musichouse.api.music.interfaces.UserInterface;
 import com.musichouse.api.music.repository.AddressRepository;
 import com.musichouse.api.music.repository.PhoneRepository;
@@ -16,10 +17,12 @@ import com.musichouse.api.music.repository.RolRepository;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.security.JwtService;
 import com.musichouse.api.music.util.RoleConstants;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +49,8 @@ public class UserService implements UserInterface {
     private final RolRepository rolRepository;
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
+    @Autowired
+    private  final MailManager mailManager;
 
 
     @Transactional
@@ -65,6 +70,13 @@ public class UserService implements UserInterface {
         User userSaved = userRepository.save(user);
         UserDtoExit userDtoExit = mapper.map(userSaved, UserDtoExit.class);
         userDtoExit.setToken(new TokenDtoSalida(jwt));
+
+        try {
+            sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
+        } catch (MessagingException e) {
+            LOGGER.error("Error al enviar el correo electrónico: ", e);
+            throw new RuntimeException("Error al enviar el correo electrónico", e);
+        }
         return userDtoExit;
     }
 
@@ -153,5 +165,11 @@ public class UserService implements UserInterface {
             throw new ResourceNotFoundException("User not found with id: " + idUser);
         }
     }
+
+    public  void sendMessageUser(String email,String name,String lastName) throws MessagingException {
+        mailManager.sendMessage(email,name,lastName);
+
+    }
+
 
 }
