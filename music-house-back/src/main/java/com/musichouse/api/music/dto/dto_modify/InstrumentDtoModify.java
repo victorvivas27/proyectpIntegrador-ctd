@@ -1,6 +1,7 @@
 package com.musichouse.api.music.dto.dto_modify;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.musichouse.api.music.dto.dto_entrance.CharacteristicDtoEntrance;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,5 +40,8 @@ public class InstrumentDtoModify {
     private Long idCategory;
     @NotNull(message = "El id de la tematica es obligatorio")
     private Long idTheme;
+
+    @NotNull(message = "Las características del instrumento es obligatorio")
+    private CharacteristicDtoEntrance characteristic;
 
 }

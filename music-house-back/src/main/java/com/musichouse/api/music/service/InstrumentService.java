@@ -3,6 +3,7 @@ package com.musichouse.api.music.service;
 import com.musichouse.api.music.dto.dto_entrance.CharacteristicDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
+import com.musichouse.api.music.dto.dto_modify.CharacteristicDtoModify;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -101,6 +102,22 @@ public class InstrumentService implements InstrumentInterface {
         instrumentToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
         instrumentToUpdate.setCategory(category);
         instrumentToUpdate.setTheme(theme);
+
+        // Obtener las características existentes y actualizarlas
+        Characteristics characteristics = instrumentToUpdate.getCharacteristics();
+        if (characteristics == null) {
+            characteristics = new Characteristics();
+            instrumentToUpdate.setCharacteristics(characteristics);
+        }
+
+        CharacteristicDtoEntrance characteristicsDtoEntrance = instrumentDtoModify.getCharacteristic();
+        characteristics.setInstrumentCase(characteristicsDtoEntrance.getInstrumentCase());
+        characteristics.setSupport(characteristicsDtoEntrance.getSupport());
+        characteristics.setTuner(characteristicsDtoEntrance.getTuner());
+        characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
+        characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
+
+        // Guardar el instrumento actualizado
         instrumentRepository.save(instrumentToUpdate);
         return mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
     }
