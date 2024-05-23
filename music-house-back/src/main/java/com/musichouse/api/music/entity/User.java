@@ -92,7 +92,7 @@ public class User implements UserDetails {
      */
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "user_rol",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Role> roles;

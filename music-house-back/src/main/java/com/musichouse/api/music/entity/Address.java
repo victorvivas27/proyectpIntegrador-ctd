@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "ADDRESS")
+@Table(name = "ADDRESSES")
 
 /**
  * La anotación @EqualsAndHashCode(exclude = {"user"}) se utiliza para indicar que, al calcular el hashCode y determinar la igualdad de objetos (equals),
