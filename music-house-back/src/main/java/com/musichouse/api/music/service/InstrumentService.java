@@ -36,12 +36,11 @@ public class InstrumentService implements InstrumentInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la temática con el ID proporcionado"));
         CharacteristicDtoEntrance characteristicsDtoEntrance = instrumentsDtoEntrance.getCharacteristic();
         Characteristics characteristics = new Characteristics();
-        characteristics.setMaterial(characteristicsDtoEntrance.getMaterial());
-        characteristics.setFrets(characteristicsDtoEntrance.getFrets());
-        characteristics.setScaleLength(characteristicsDtoEntrance.getScaleLength());
-        characteristics.setNumberOfStrings(characteristicsDtoEntrance.getNumberOfStrings());
-        characteristics.setTypeOfStrings(characteristicsDtoEntrance.getTypeOfStrings());
-        characteristics.setOriginCountry(characteristicsDtoEntrance.getOriginCountry());
+        characteristics.setInstrumentCase(characteristicsDtoEntrance.getInstrumentCase());
+        characteristics.setSupport(characteristicsDtoEntrance.getSupport());
+        characteristics.setTuner(characteristicsDtoEntrance.getTuner());
+        characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
+        characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
 
         Instrument instrument = new Instrument();
         instrument.setName(instrumentsDtoEntrance.getName());

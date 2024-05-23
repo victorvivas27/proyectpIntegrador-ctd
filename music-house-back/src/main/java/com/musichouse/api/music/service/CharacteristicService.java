@@ -48,12 +48,11 @@ public class CharacteristicService implements CharacteristicInterface {
     public CharacteristicDtoExit updateCharacteristic(CharacteristicDtoModify characteristicDtoModify) throws ResourceNotFoundException {
         Characteristics characteristicsToUpdate = characteristicRepository.findById(characteristicDtoModify.getIdCharacteristic())
                 .orElseThrow(() -> new ResourceNotFoundException("Characteristic not found with id: " + characteristicDtoModify.getIdCharacteristic()));
-        characteristicsToUpdate.setMaterial(characteristicDtoModify.getMaterial());
-        characteristicsToUpdate.setFrets(characteristicDtoModify.getFrets());
-        characteristicsToUpdate.setScaleLength(characteristicDtoModify.getScaleLength());
-        characteristicsToUpdate.setNumberOfStrings(characteristicDtoModify.getNumberOfStrings());
-        characteristicsToUpdate.setTypeOfStrings(characteristicDtoModify.getTypeOfStrings());
-        characteristicsToUpdate.setOriginCountry(characteristicDtoModify.getOriginCountry());
+        characteristicsToUpdate.setInstrumentCase(characteristicDtoModify.getInstrumentCase());
+        characteristicsToUpdate.setSupport(characteristicDtoModify.getSupport());
+        characteristicsToUpdate.setTuner(characteristicDtoModify.getTuner());
+        characteristicsToUpdate.setMicrophone(characteristicDtoModify.getMicrophone());
+        characteristicsToUpdate.setPhoneHolder(characteristicDtoModify.getPhoneHolder());
         characteristicRepository.save(characteristicsToUpdate);
         return mapper.map(characteristicsToUpdate, CharacteristicDtoExit.class);
 

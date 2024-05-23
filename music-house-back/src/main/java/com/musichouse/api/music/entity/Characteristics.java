@@ -24,40 +24,33 @@ public class Characteristics {
     private Long idCharacteristics;
 
     /**
-     * Material del instrumento (madera, metal, plástico, etc.).
+     * Si lleva estuche.
      */
-    @Column(name = "material", length = 50, nullable = false)
-    private String material;
+    @Column(name = "instrument_case", length = 50, nullable = false)
+    private String instrumentCase;
 
     /**
-     * Número de trastes en el instrumento.
+     * Si lleva soporte.
      */
-    @Column(name = "frets", nullable = false)
-    private Long frets;
+    @Column(name = "support",length = 50, nullable = false)
+    private String support;
 
     /**
-     * Longitud de escala del instrumento.
+     * Si lleva afinador.
      */
-    @Column(name = "scale_length", length = 50, nullable = false)
-    private String scaleLength;
+    @Column(name = "tuner", length = 50, nullable = false)
+    private String tuner;
 
     /**
-     * Número de cuerdas en el instrumento.
+     * Si lleva micrófono.
      */
-    @Column(name = "number_of_strings", nullable = false)
-    private Long numberOfStrings;
+    @Column(name = "microphone",length = 50,nullable = false)
+    private String microphone;
 
     /**
-     * Tipo de cuerdas del instrumento.
+     * Si lleva soporte para teléfono.
      */
-    @Column(name = "type_of_strings", length = 50, nullable = false)
-    private String typeOfStrings;
-
-    /**
-     * País de origen del instrumento.
-     */
-    @Column(name = "origin_country", length = 50, nullable = false)
-    private String originCountry;
-
+    @Column(name = "phone_holder", length = 50, nullable = false)
+    private String phoneHolder;
 
 }

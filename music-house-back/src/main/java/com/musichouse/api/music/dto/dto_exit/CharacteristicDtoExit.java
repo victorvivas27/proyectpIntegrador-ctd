@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CharacteristicDtoExit {
     private Long idCharacteristics;
-    private String material;
-    private Long frets;
-    private String scaleLength;
-    private Long numberOfStrings;
-    private String typeOfStrings;
-    private String originCountry;
+    private String instrumentCase;
+    private String support;
+    private String tuner;
+    private String microphone;
+    private String phoneHolder;
 }

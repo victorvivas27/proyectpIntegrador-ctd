@@ -47,8 +47,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/category/**").permitAll()
                         // Rutas de instrumentos (todas las operaciones)
                         .requestMatchers("/api/instrument/**").permitAll()
-                        // Rutas de instrumentos (PUT) solo para ADMIN
-                        .requestMatchers(HttpMethod.PUT, "/api/instrument/update").hasAnyAuthority(RoleConstants.ADMIN)
+                        // Rutas de caracteristica (todas las operaciones)
+                        .requestMatchers("/api/characteristic/**").permitAll()
                         // Rutas de URLs de imagen (todas las operaciones)
                         .requestMatchers("/api/imageurls/**").permitAll()
 
