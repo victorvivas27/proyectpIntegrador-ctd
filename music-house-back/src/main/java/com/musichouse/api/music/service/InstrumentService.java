@@ -16,7 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -94,7 +93,6 @@ public class InstrumentService implements InstrumentInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la temática con el ID proporcionado"));
         Instrument instrumentToUpdate = instrumentRepository.findById(instrumentDtoModify.getIdInstrument())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
-
         instrumentToUpdate.setName(instrumentDtoModify.getName());
         instrumentToUpdate.setDescription(instrumentDtoModify.getDescription());
         instrumentToUpdate.setWeight(instrumentDtoModify.getWeight());
@@ -102,22 +100,17 @@ public class InstrumentService implements InstrumentInterface {
         instrumentToUpdate.setRentalPrice(instrumentDtoModify.getRentalPrice());
         instrumentToUpdate.setCategory(category);
         instrumentToUpdate.setTheme(theme);
-
-        // Obtener las características existentes y actualizarlas
         Characteristics characteristics = instrumentToUpdate.getCharacteristics();
         if (characteristics == null) {
             characteristics = new Characteristics();
             instrumentToUpdate.setCharacteristics(characteristics);
         }
-
         CharacteristicDtoEntrance characteristicsDtoEntrance = instrumentDtoModify.getCharacteristic();
         characteristics.setInstrumentCase(characteristicsDtoEntrance.getInstrumentCase());
         characteristics.setSupport(characteristicsDtoEntrance.getSupport());
         characteristics.setTuner(characteristicsDtoEntrance.getTuner());
         characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
         characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
-
-        // Guardar el instrumento actualizado
         instrumentRepository.save(instrumentToUpdate);
         return mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
     }

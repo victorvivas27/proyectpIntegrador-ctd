@@ -24,8 +24,8 @@ public class MailManager {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         String content = MessageHTML.MESSAGE_HTML;
-        content = content.replace("{0}",name);
-        content= content.replace("{1}",lastName);
+        content = content.replace("{nombre}",name);
+        content= content.replace("{apellido}",lastName);
 
         try {
             mimeMessage.setSubject("Prueba de correo");
