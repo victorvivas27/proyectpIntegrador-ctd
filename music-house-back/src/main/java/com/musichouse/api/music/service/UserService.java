@@ -55,7 +55,8 @@ public class UserService implements UserInterface {
 
     @Transactional
     @Override
-    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException {
+    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException
+            ,MessagingException{
         User user = mapper.map(userDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
@@ -69,20 +70,20 @@ public class UserService implements UserInterface {
         String jwt = jwtService.generateToken(user);
         User userSaved = userRepository.save(user);
         UserDtoExit userDtoExit = mapper.map(userSaved, UserDtoExit.class);
-        userDtoExit.setToken(new TokenDtoSalida(jwt));
+        userDtoExit.setToken(
+                new TokenDtoSalida(user.getName(),
+                        user.getLastName(),
+                        new ArrayList<>(user.getRoles()),
+                        jwt));
+        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
 
-        try {
-            sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
-        } catch (MessagingException e) {
-            LOGGER.error("Error al enviar el correo electrónico: ", e);
-            throw new RuntimeException("Error al enviar el correo electrónico", e);
-        }
         return userDtoExit;
     }
 
     @Transactional
     @Override
-    public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException {
+    public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException
+            ,MessagingException{
         User user = mapper.map(userAdminDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
@@ -94,7 +95,12 @@ public class UserService implements UserInterface {
         String jwt = jwtService.generateToken(user);
         User userSaved = userRepository.save(user);
         UserDtoExit userDtoExit = mapper.map(userSaved, UserDtoExit.class);
-        userDtoExit.setToken(new TokenDtoSalida(jwt));
+        userDtoExit.setToken(
+                new TokenDtoSalida(user.getName(),
+                        user.getLastName(),
+                        new ArrayList<>(user.getRoles()),
+                        jwt));
+        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
         return userDtoExit;
     }
 
@@ -111,7 +117,12 @@ public class UserService implements UserInterface {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = jwtService.generateToken(userDetails);
         User user = userOptional.get();
-        TokenDtoSalida tokenDtoSalida = new TokenDtoSalida(token, new ArrayList<>(user.getRoles()));
+        TokenDtoSalida tokenDtoSalida = new TokenDtoSalida(
+                user.getName(),
+                user.getLastName(),
+                new ArrayList<>(user.getRoles()),
+                token
+        );
         return tokenDtoSalida;
     }
 

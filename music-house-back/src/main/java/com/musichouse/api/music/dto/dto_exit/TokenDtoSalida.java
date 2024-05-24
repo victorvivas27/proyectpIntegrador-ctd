@@ -13,21 +13,19 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TokenDtoSalida {
+    private String name;
+    private String lastName;
     private List<Role> roles;
     private String token;
     @Builder.Default
     private String tokenType = "Bearer ";
 
-    // Constructor personalizado que solo toma el token
-    public TokenDtoSalida(String token) {
-        this.token = token;
-        this.tokenType = "Bearer ";
-    }
-
-    // Constructor personalizado que toma el token y los roles
-    public TokenDtoSalida(String token, List<Role> roles) {
-        this.token = token;
-        this.tokenType = "Bearer ";
+    // Constructor personalizado que toma el nombre del usuario, apellido, roles y token
+    public TokenDtoSalida(String name, String lastName, List<Role> roles, String token) {
+        this.name = name;
+        this.lastName = lastName;
         this.roles = roles;
+        this.token = token;
+        this.tokenType = "Bearer ";
     }
 }
