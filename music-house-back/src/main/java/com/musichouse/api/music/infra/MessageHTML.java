@@ -20,7 +20,7 @@ public class MessageHTML {
             "<h1 style=\"color: #1e88e5;\">¡Bienvenido a Music House!</h1>" +
             "</div>" +
             "<div class=\"content\">" +
-            "<p>Hola, {nombre} {apellido}</p>" +
+            "<p>Hola, <strong>{nombre}</strong> <strong>{apellido}</strong></p>" +
             "<p>Tu cuenta ha sido creada con éxito. Nos alegra tenerte con nosotros.</p>" +
             "<p>Disfruta de nuestros servicios y si tienes alguna pregunta, no dudes en contactarnos.</p>" +
             "</div>" +
