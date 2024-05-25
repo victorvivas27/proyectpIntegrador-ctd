@@ -12,11 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Servicio para la generación y validación de tokens JWT.
@@ -35,16 +33,21 @@ public class JwtService {
      * @return Token JWT generado.
      */
     public String generateToken(UserDetails userDetails) {
+        List<String> roles = userDetails.getAuthorities()
+                .stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+
         JwtClaims jwtClaims = JwtClaims.builder()
                 .id(UUID.randomUUID().toString())
-                .role(userDetails.getAuthorities().stream().findFirst().get().getAuthority())
+                .roles(roles)
                 .name(((User) userDetails).getName())
                 .lastName(((User) userDetails).getLastName())
                 .build();
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", jwtClaims.getId());
-        claims.put("role", jwtClaims.getRole());
+        claims.put("roles", jwtClaims.getRoles());
         claims.put("name", jwtClaims.getName());
         claims.put("lastName", jwtClaims.getLastName());
 

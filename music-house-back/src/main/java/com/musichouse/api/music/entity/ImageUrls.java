@@ -30,7 +30,7 @@ public class ImageUrls {
     /**
      * URL de la imagen.
      */
-    @Column(name = "image_url", length = 1024 )
+    @Column(name = "image_url", length = 1024)
     private String imageUrl;
 
     /**

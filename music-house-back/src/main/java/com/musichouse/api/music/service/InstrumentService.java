@@ -3,7 +3,6 @@ package com.musichouse.api.music.service;
 import com.musichouse.api.music.dto.dto_entrance.CharacteristicDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
-import com.musichouse.api.music.dto.dto_modify.CharacteristicDtoModify;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -16,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service

@@ -3,7 +3,7 @@ package com.musichouse.api.music.service;
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
-import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
+import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.Role;
@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -50,13 +51,13 @@ public class UserService implements UserInterface {
     private final AddressRepository addressRepository;
     private final PhoneRepository phoneRepository;
     @Autowired
-    private  final MailManager mailManager;
+    private final MailManager mailManager;
 
 
     @Transactional
     @Override
-    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException
-            ,MessagingException{
+    public TokenDtoExit createUser(UserDtoEntrance userDtoEntrance) throws DataIntegrityViolationException
+            , MessagingException {
         User user = mapper.map(userDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
@@ -67,23 +68,22 @@ public class UserService implements UserInterface {
         user.setRoles(roles);
         user.getAddresses().forEach(address -> address.setUser(user));
         user.getPhones().forEach(phone -> phone.setUser(user));
-        String jwt = jwtService.generateToken(user);
+        String token = jwtService.generateToken(user);
         User userSaved = userRepository.save(user);
-        UserDtoExit userDtoExit = mapper.map(userSaved, UserDtoExit.class);
-        userDtoExit.setToken(
-                new TokenDtoSalida(user.getName(),
-                        user.getLastName(),
-                        new ArrayList<>(user.getRoles()),
-                        jwt));
-        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
-
-        return userDtoExit;
+        TokenDtoExit tokenDtoSalida = new TokenDtoExit(
+                user.getIdUser(),
+                user.getName(),
+                user.getLastName(),
+                new ArrayList<>(user.getRoles()),
+                token
+        );
+        return tokenDtoSalida;
     }
 
     @Transactional
     @Override
-    public UserDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException
-            ,MessagingException{
+    public TokenDtoExit createUserAdmin(UserAdminDtoEntrance userAdminDtoEntrance) throws DataIntegrityViolationException
+            , MessagingException {
         User user = mapper.map(userAdminDtoEntrance, User.class);
         String contraseñaEncriptada = passwordEncoder.encode(user.getPassword());
         user.setPassword(contraseñaEncriptada);
@@ -92,20 +92,21 @@ public class UserService implements UserInterface {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
-        String jwt = jwtService.generateToken(user);
+        String token = jwtService.generateToken(user);
         User userSaved = userRepository.save(user);
-        UserDtoExit userDtoExit = mapper.map(userSaved, UserDtoExit.class);
-        userDtoExit.setToken(
-                new TokenDtoSalida(user.getName(),
-                        user.getLastName(),
-                        new ArrayList<>(user.getRoles()),
-                        jwt));
-        sendMessageUser(user.getEmail(), user.getName(),user.getLastName());
-        return userDtoExit;
+        TokenDtoExit tokenDtoSalida = new TokenDtoExit(
+                user.getIdUser(),
+                user.getName(),
+                user.getLastName(),
+                new ArrayList<>(user.getRoles()),
+                token
+        );
+        sendMessageUser(user.getEmail(), user.getName(), user.getLastName());
+        return tokenDtoSalida;
     }
 
     @Override
-    public TokenDtoSalida loginUserAndCheckEmail(LoginDtoEntrance loginDtoEntrance) throws ResourceNotFoundException, AuthenticationException {
+    public TokenDtoExit loginUserAndCheckEmail(LoginDtoEntrance loginDtoEntrance) throws ResourceNotFoundException, AuthenticationException {
         Optional<User> userOptional = userRepository.findByEmail(loginDtoEntrance.getEmail());
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("Usuario no encontrado con el correo electrónico proporcionado.");
@@ -117,7 +118,8 @@ public class UserService implements UserInterface {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = jwtService.generateToken(userDetails);
         User user = userOptional.get();
-        TokenDtoSalida tokenDtoSalida = new TokenDtoSalida(
+        TokenDtoExit tokenDtoSalida = new TokenDtoExit(
+                user.getIdUser(),
                 user.getName(),
                 user.getLastName(),
                 new ArrayList<>(user.getRoles()),
@@ -126,11 +128,10 @@ public class UserService implements UserInterface {
         return tokenDtoSalida;
     }
 
-    @Override
     public List<UserDtoExit> getAllUser() {
-        List<UserDtoExit> userDtoExits = userRepository.findAll().stream()
-                .map(user -> mapper.map(user, UserDtoExit.class)).toList();
-        return userDtoExits;
+        return userRepository.findAll().stream()
+                .map(user -> mapper.map(user, UserDtoExit.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -177,8 +178,8 @@ public class UserService implements UserInterface {
         }
     }
 
-    public  void sendMessageUser(String email,String name,String lastName) throws MessagingException {
-        mailManager.sendMessage(email,name,lastName);
+    public void sendMessageUser(String email, String name, String lastName) throws MessagingException {
+        mailManager.sendMessage(email, name, lastName);
 
     }
 

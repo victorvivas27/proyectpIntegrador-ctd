@@ -12,7 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TokenDtoSalida {
+public class TokenDtoExit {
+    private Long idUser;
     private String name;
     private String lastName;
     private List<Role> roles;
@@ -20,8 +21,8 @@ public class TokenDtoSalida {
     @Builder.Default
     private String tokenType = "Bearer ";
 
-    // Constructor personalizado que toma el nombre del usuario, apellido, roles y token
-    public TokenDtoSalida(String name, String lastName, List<Role> roles, String token) {
+    public TokenDtoExit(Long idUser, String name, String lastName, List<Role> roles, String token) {
+        this.idUser = idUser;
         this.name = name;
         this.lastName = lastName;
         this.roles = roles;

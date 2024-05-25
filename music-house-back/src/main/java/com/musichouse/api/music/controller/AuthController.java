@@ -3,8 +3,7 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserAdminDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
-import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
-import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
+import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.service.UserService;
@@ -28,8 +27,8 @@ public class AuthController {
     @PostMapping("/create/admin")
     public ResponseEntity<?> createUserAdmin(@RequestBody @Valid UserAdminDtoEntrance userAdminDtoEntrance) {
         try {
-            UserDtoExit createdUser = userService.createUserAdmin(userAdminDtoEntrance);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Usuario  admin creado con éxito.", createdUser));
+            TokenDtoExit tokenDtoExit = userService.createUserAdmin(userAdminDtoEntrance);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Usuario  admin creado con éxito.", tokenDtoExit));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
@@ -42,8 +41,8 @@ public class AuthController {
     @PostMapping("/create/user")
     public ResponseEntity<?> createUser(@RequestBody @Valid UserDtoEntrance userDtoEntrance) {
         try {
-            UserDtoExit createdUser = userService.createUser(userDtoEntrance);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Usuario creado con éxito.", createdUser));
+            TokenDtoExit tokenDtoExit = userService.createUser(userDtoEntrance);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>("Usuario creado con éxito.", tokenDtoExit));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>("El correo electrónico ingresado ya está en uso. Por favor, elija otro correo electrónico.", null));
@@ -56,7 +55,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Valid @RequestBody LoginDtoEntrance loginDtoEntrance) {
         try {
-            TokenDtoSalida tokenDtoSalida = userService.loginUserAndCheckEmail(loginDtoEntrance);
+            TokenDtoExit tokenDtoSalida = userService.loginUserAndCheckEmail(loginDtoEntrance);
             return ResponseEntity.ok(tokenDtoSalida);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

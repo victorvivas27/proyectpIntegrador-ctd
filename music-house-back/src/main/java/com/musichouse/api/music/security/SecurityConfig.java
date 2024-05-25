@@ -1,6 +1,5 @@
 package com.musichouse.api.music.security;
 
-import com.musichouse.api.music.util.RoleConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +50,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/characteristic/**").permitAll()
                         // Rutas de URLs de imagen (todas las operaciones)
                         .requestMatchers("/api/imageurls/**").permitAll()
+                        // Rutas de Roles (todas las operaciones)
+                        .requestMatchers("/api/roles/**").permitAll()
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager

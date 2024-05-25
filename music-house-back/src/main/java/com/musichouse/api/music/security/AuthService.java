@@ -1,7 +1,7 @@
 package com.musichouse.api.music.security;
 
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
-import com.musichouse.api.music.dto.dto_exit.TokenDtoSalida;
+import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.exception.UnauthorizedException;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.util.RoleConstants;
@@ -28,7 +28,7 @@ public class AuthService {
      * @return Objeto DTO que contiene el token generado en caso de inicio de sesión exitoso.
      * @throws AccessDeniedException Si el usuario no tiene los permisos requeridos para iniciar sesión.
      */
-    public TokenDtoSalida login(LoginDtoEntrance loginDtoEntrance) throws UnauthorizedException {
+    public TokenDtoExit login(LoginDtoEntrance loginDtoEntrance) throws UnauthorizedException {
         // Autenticar las credenciales del usuario
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDtoEntrance.getEmail(),
@@ -42,7 +42,7 @@ public class AuthService {
                 a.getAuthority().equals(RoleConstants.ADMIN) || a.getAuthority().equals(RoleConstants.USER))) {
             // Generar el token utilizando JwtService
             String token = jwtService.generateToken(userDetails);
-            return TokenDtoSalida.builder().token(token).build();
+            return TokenDtoExit.builder().token(token).build();
         } else {
             // Lanzar excepción si el usuario no tiene permisos suficientes
             throw new UnauthorizedException("No tiene permisos de administrador");
