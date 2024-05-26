@@ -29,10 +29,10 @@ public class RoleService implements RoleInterface {
                 .orElseThrow(() -> {
                     return new ResourceNotFoundException("Usuario no encontrado con id: " + changeOfRole.getIdUser());
                 });
-        String roleName = changeOfRole.getRol().toUpperCase();
-        Role role = rolRepository.findByRol(roleName)
+
+        Role role = rolRepository.findByRol(changeOfRole.getRol())
                 .orElseThrow(() -> {
-                    return new ResourceNotFoundException("Rol no encontrado con nombre: " + roleName);
+                    return new ResourceNotFoundException("Rol no encontrado con nombre: " + changeOfRole.getRol());
                 });
         user.getRoles().add(role);
         userRepository.save(user);
@@ -45,7 +45,6 @@ public class RoleService implements RoleInterface {
                 .orElseThrow(() -> {
                     return new ResourceNotFoundException("Usuario no encontrado con id: " + changeOfRole.getIdUser());
                 });
-        String roleName = changeOfRole.getRol().toUpperCase();
         Role role = rolRepository.findByRol(changeOfRole.getRol())
                 .orElseThrow(() -> {
                     return new ResourceNotFoundException("Rol no encontrado con nombre: " + changeOfRole.getRol());
