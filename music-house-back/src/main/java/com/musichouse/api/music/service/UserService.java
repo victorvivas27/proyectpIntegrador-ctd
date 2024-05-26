@@ -154,9 +154,9 @@ public class UserService implements UserInterface {
         userToUpdate.setName(userDtoModify.getName());
         userToUpdate.setLastName(userDtoModify.getLastName());
         userToUpdate.setEmail(userDtoModify.getEmail());
-        userToUpdate.setPassword(userDtoModify.getPassword());
-        if (!userToUpdate.getPassword().isEmpty()) {
-            String contraseñaEncriptada = passwordEncoder.encode(userToUpdate.getPassword());
+        String newPassword =userDtoModify.getPassword();
+        if (newPassword !=null && !newPassword.isEmpty()) {
+            String contraseñaEncriptada = passwordEncoder.encode(newPassword);
             userToUpdate.setPassword(contraseñaEncriptada);
         }
         userRepository.save(userToUpdate);
