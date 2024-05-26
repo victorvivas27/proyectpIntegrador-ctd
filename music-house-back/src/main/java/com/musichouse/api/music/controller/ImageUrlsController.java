@@ -38,9 +38,11 @@ public class ImageUrlsController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ImagesUrlsDtoExit>> allImageUrls() {
+    public ResponseEntity<ApiResponse<List<ImagesUrlsDtoExit>>> allImagesUrls() {
         List<ImagesUrlsDtoExit> imagesUrlsDtoExits = imageUrlsService.getAllImageUrls();
-        return new ResponseEntity<>(imagesUrlsDtoExits, HttpStatus.OK);
+        ApiResponse<List<ImagesUrlsDtoExit>> response =
+                new ApiResponse<>("Lista de Imagenes Urls exitosa.", imagesUrlsDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idImage}")

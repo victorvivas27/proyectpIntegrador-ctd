@@ -22,9 +22,11 @@ public class CharacteristicController {
     private final CharacteristicService characteristicService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<?>> allCharacteristc() {
+    public ResponseEntity<ApiResponse<List<CharacteristicDtoExit>>> allCharacteristics() {
         List<CharacteristicDtoExit> characteristicDtoExits = characteristicService.getAllCharacteristic();
-        return new ResponseEntity<>(characteristicDtoExits, HttpStatus.OK);
+        ApiResponse<List<CharacteristicDtoExit>> response =
+                new ApiResponse<>("Lista de Carcateristicas exitosa.",characteristicDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idCharacteristics}")

@@ -77,6 +77,7 @@ public class UserService implements UserInterface {
                 new ArrayList<>(user.getRoles()),
                 token
         );
+        sendMessageUser(user.getEmail(), user.getName(), user.getLastName());
         return tokenDtoSalida;
     }
 

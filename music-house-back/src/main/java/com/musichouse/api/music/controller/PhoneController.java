@@ -36,9 +36,11 @@ public class PhoneController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<?>> allPhone() {
-        List<PhoneDtoExit> allPhone = phoneService.getAllPhone();
-        return new ResponseEntity<>(allPhone, HttpStatus.OK);
+    public ResponseEntity<ApiResponse<List<PhoneDtoExit>>> allPhone() {
+        List<PhoneDtoExit> phoneDtoExits = phoneService.getAllPhone();
+        ApiResponse<List<PhoneDtoExit>> response =
+                new ApiResponse<>("Lista de Telefonos exitosa.", phoneDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idPhone}")

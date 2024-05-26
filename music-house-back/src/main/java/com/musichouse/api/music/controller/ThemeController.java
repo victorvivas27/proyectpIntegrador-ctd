@@ -38,9 +38,11 @@ public class ThemeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ThemeDtoExit>> allTheme() {
+    public ResponseEntity<ApiResponse<List<ThemeDtoExit>>> allTheme() {
         List<ThemeDtoExit> themeDtoExits = themeService.getAllThemes();
-        return new ResponseEntity<>(themeDtoExits, HttpStatus.OK);
+        ApiResponse<List<ThemeDtoExit>> response =
+                new ApiResponse<>("Lista de Tematica exitosa.", themeDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idTheme}")

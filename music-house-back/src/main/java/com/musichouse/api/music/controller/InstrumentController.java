@@ -35,9 +35,11 @@ public class InstrumentController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<InstrumentDtoExit>> allInstruments() {
-        List<InstrumentDtoExit> allInstruments = instrumentService.getAllInstruments();
-        return new ResponseEntity<>(allInstruments, HttpStatus.OK);
+    public ResponseEntity<ApiResponse<List<InstrumentDtoExit>>> allInstruments() {
+        List<InstrumentDtoExit> instrumentDtoExits = instrumentService.getAllInstruments();
+        ApiResponse<List<InstrumentDtoExit>> response =
+                new ApiResponse<>("Lista de Instrumentos exitosa.",instrumentDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idInstrument}")

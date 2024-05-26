@@ -23,9 +23,11 @@ public class UserController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> allUser() {
-        List<UserDtoExit> allUser = userService.getAllUser();
-        return ResponseEntity.ok(allUser);
+    public ResponseEntity<ApiResponse<List<UserDtoExit>>> allPhone() {
+        List<UserDtoExit> userDtoExits = userService.getAllUser();
+        ApiResponse<List<UserDtoExit>> response =
+                new ApiResponse<>("Lista de Usuarios exitosa.", userDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idUser}")

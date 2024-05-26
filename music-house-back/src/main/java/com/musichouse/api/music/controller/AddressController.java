@@ -37,9 +37,11 @@ public class AddressController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<?>> allAddress() {
-        List<AddressDtoExit> allAddress = addressService.getAllAddress();
-        return new ResponseEntity<>(allAddress, HttpStatus.OK);
+    public ResponseEntity<ApiResponse<List<AddressDtoExit>>> allAddresses() {
+        List<AddressDtoExit> addressDtoExits = addressService.getAllAddress();
+        ApiResponse<List<AddressDtoExit>> response =
+                new ApiResponse<>("Lista de Direcciones exitosa.", addressDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idAddress}")

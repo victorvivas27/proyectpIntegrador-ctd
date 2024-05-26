@@ -38,9 +38,11 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CategoryDtoExit>> allCategory() {
+    public ResponseEntity<ApiResponse<List<CategoryDtoExit>>> allCategorys() {
         List<CategoryDtoExit> categoryDtoExits = categoryService.getAllCategories();
-        return new ResponseEntity<>(categoryDtoExits, HttpStatus.OK);
+        ApiResponse<List<CategoryDtoExit>> response =
+                new ApiResponse<>("Lista de Categorias exitosa.",categoryDtoExits);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/search/{idCategory}")
