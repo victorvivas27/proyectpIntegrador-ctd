@@ -1,5 +1,6 @@
 package com.musichouse.api.music.service;
 
+import com.musichouse.api.music.dto.dto_entrance.ChangeOfRole;
 import com.musichouse.api.music.entity.Role;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @AllArgsConstructor
 public class RoleService implements RoleInterface {
@@ -22,23 +24,35 @@ public class RoleService implements RoleInterface {
     private final UserRepository userRepository;
 
     @Transactional
-    public void addRoleToUser(Long userId, String rol) throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        Role role = rolRepository.findByRol(rol)
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found with name: " + rol));
+    public void addRoleToUser(ChangeOfRole changeOfRole) throws ResourceNotFoundException {
+        User user = userRepository.findById(changeOfRole.getIdUser())
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("Usuario no encontrado con id: " + changeOfRole.getIdUser());
+                });
+        String roleName = changeOfRole.getRol().toUpperCase();
+        Role role = rolRepository.findByRol(roleName)
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("Rol no encontrado con nombre: " + roleName);
+                });
         user.getRoles().add(role);
         userRepository.save(user);
+
     }
 
     @Transactional
-    public void removeRoleFromUser(Long userId, String rol) throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        Role role = rolRepository.findByRol(rol)
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found with name: " + rol));
+    public void removeRoleFromUser(ChangeOfRole changeOfRole) throws ResourceNotFoundException {
+        User user = userRepository.findById(changeOfRole.getIdUser())
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("Usuario no encontrado con id: " + changeOfRole.getIdUser());
+                });
+        String roleName = changeOfRole.getRol().toUpperCase();
+        Role role = rolRepository.findByRol(changeOfRole.getRol())
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("Rol no encontrado con nombre: " + changeOfRole.getRol());
+                });
+
         user.getRoles().remove(role);
         userRepository.save(user);
-    }
 
+    }
 }
