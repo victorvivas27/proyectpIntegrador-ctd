@@ -155,8 +155,8 @@ public class UserService implements UserInterface {
         userToUpdate.setName(userDtoModify.getName());
         userToUpdate.setLastName(userDtoModify.getLastName());
         userToUpdate.setEmail(userDtoModify.getEmail());
-        String newPassword =userDtoModify.getPassword();
-        if (newPassword !=null && !newPassword.isEmpty()) {
+        String newPassword = userDtoModify.getPassword();
+        if (newPassword != null && !newPassword.isEmpty()) {
             String contraseñaEncriptada = passwordEncoder.encode(newPassword);
             userToUpdate.setPassword(contraseñaEncriptada);
         }
@@ -183,6 +183,5 @@ public class UserService implements UserInterface {
         mailManager.sendMessage(email, name, lastName);
 
     }
-
 
 }

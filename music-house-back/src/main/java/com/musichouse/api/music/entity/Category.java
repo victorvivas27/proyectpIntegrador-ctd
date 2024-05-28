@@ -3,6 +3,7 @@ package com.musichouse.api.music.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,7 +14,6 @@ import java.util.Date;
 @Table(name = "CATEGORIES")
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Category {
     /**
      * Identificador único de la categoría.

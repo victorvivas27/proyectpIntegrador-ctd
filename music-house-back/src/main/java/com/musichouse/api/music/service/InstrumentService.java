@@ -123,4 +123,26 @@ public class InstrumentService implements InstrumentInterface {
             throw new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado");
         }
     }
+
+    public List<Instrument> searchInstruments(String name) throws IllegalArgumentException {
+        if (name != null) {
+            return instrumentRepository.findByNameContaining(name);
+        } else {
+            throw new IllegalArgumentException("Parámetro de búsqueda inválido");
+        }
+    }
+
+    /*public List<Instrument> searchInstruments(String name, Long categoryId, Long themeId) throws IllegalArgumentException{
+        if (name != null && categoryId == null && themeId == null) {
+            return instrumentRepository.findByNameContaining(name);
+        } else if (name != null && categoryId != null && themeId != null) {
+            return instrumentRepository.findByNameContainingAndCategory_IdCategoryAndTheme_IdTheme(name, categoryId, themeId);
+        } else if (name != null && categoryId != null) {
+            return instrumentRepository.findByNameContainingAndCategory_IdCategory(name, categoryId);
+        } else if (name != null && themeId != null) {
+            return instrumentRepository.findByNameContainingAndTheme_IdTheme(name, themeId);
+        } else {
+            throw new IllegalArgumentException("Invalid search parameters");
+        }
+    }*/
 }

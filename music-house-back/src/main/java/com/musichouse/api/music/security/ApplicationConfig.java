@@ -87,7 +87,8 @@ public class ApplicationConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5174",
                 "http://localhost:5173",
-                "http://localhost:4173"
+                "http://localhost:4173",
+                "http://34.192.181.246"
 
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
