@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -69,7 +70,10 @@ public class InstrumentService implements InstrumentInterface {
     @Override
     public List<InstrumentDtoExit> getAllInstruments() {
         List<InstrumentDtoExit> instrumentDtoExits = instrumentRepository.findAll().stream()
-                .map(instrument -> mapper.map(instrument, InstrumentDtoExit.class)).toList();
+                .map(instrument -> {
+                    InstrumentDtoExit dto = mapper.map(instrument, InstrumentDtoExit.class);
+                    return dto;
+                }).toList();
         return instrumentDtoExits;
     }
 
@@ -112,7 +116,8 @@ public class InstrumentService implements InstrumentInterface {
         characteristics.setMicrophone(characteristicsDtoEntrance.getMicrophone());
         characteristics.setPhoneHolder(characteristicsDtoEntrance.getPhoneHolder());
         instrumentRepository.save(instrumentToUpdate);
-        return mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
+        InstrumentDtoExit instrumentDtoExit = mapper.map(instrumentToUpdate, InstrumentDtoExit.class);
+        return instrumentDtoExit;
     }
 
     @Override
@@ -132,17 +137,26 @@ public class InstrumentService implements InstrumentInterface {
         }
     }
 
-    /*public List<Instrument> searchInstruments(String name, Long categoryId, Long themeId) throws IllegalArgumentException{
-        if (name != null && categoryId == null && themeId == null) {
-            return instrumentRepository.findByNameContaining(name);
-        } else if (name != null && categoryId != null && themeId != null) {
-            return instrumentRepository.findByNameContainingAndCategory_IdCategoryAndTheme_IdTheme(name, categoryId, themeId);
-        } else if (name != null && categoryId != null) {
-            return instrumentRepository.findByNameContainingAndCategory_IdCategory(name, categoryId);
-        } else if (name != null && themeId != null) {
-            return instrumentRepository.findByNameContainingAndTheme_IdTheme(name, themeId);
-        } else {
-            throw new IllegalArgumentException("Invalid search parameters");
+    public List<Instrument> findInstrumentsByRentalPriceLessThan(BigDecimal maxPrice) {
+        if (maxPrice == null || maxPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El precio máximo debe ser un valor positivo.");
         }
-    }*/
+        return instrumentRepository.findByRentalPriceLessThan(maxPrice.add(BigDecimal.ONE));
+    }
+
+    public List<Instrument> findInstrumentsByRentalPriceGreaterThan(BigDecimal minPrice) {
+        if (minPrice == null || minPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El precio mínimo debe ser un valor positivo.");
+        }
+        return instrumentRepository.findByRentalPriceGreaterThan(minPrice);
+    }
+
+    public List<Instrument> findInstrumentsByRentalPriceBetween(BigDecimal minPrice, BigDecimal maxPrice) {
+        if (minPrice == null || maxPrice == null || minPrice.compareTo(maxPrice) > 0 ||
+                minPrice.compareTo(BigDecimal.ZERO) < 0 || maxPrice.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El rango de precios es inválido.");
+        }
+        return instrumentRepository.findByRentalPriceBetween(minPrice, maxPrice);
+    }
+
 }
