@@ -25,7 +25,7 @@ public class CharacteristicController {
     public ResponseEntity<ApiResponse<List<CharacteristicDtoExit>>> allCharacteristics() {
         List<CharacteristicDtoExit> characteristicDtoExits = characteristicService.getAllCharacteristic();
         ApiResponse<List<CharacteristicDtoExit>> response =
-                new ApiResponse<>("Lista de Carcateristicas exitosa.",characteristicDtoExits);
+                new ApiResponse<>("Lista de Carcateristicas exitosa.", characteristicDtoExits);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

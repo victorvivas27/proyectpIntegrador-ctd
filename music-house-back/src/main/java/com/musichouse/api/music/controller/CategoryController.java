@@ -3,6 +3,8 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
+import com.musichouse.api.music.entity.Category;
+import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.CategoryService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -41,7 +43,7 @@ public class CategoryController {
     public ResponseEntity<ApiResponse<List<CategoryDtoExit>>> allCategorys() {
         List<CategoryDtoExit> categoryDtoExits = categoryService.getAllCategories();
         ApiResponse<List<CategoryDtoExit>> response =
-                new ApiResponse<>("Lista de Categorias exitosa.",categoryDtoExits);
+                new ApiResponse<>("Lista de Categorias exitosa.", categoryDtoExits);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -79,6 +81,21 @@ public class CategoryController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
+        }
+    }
+    @GetMapping("/find")
+    public ResponseEntity<?> searchTheme(
+            @RequestParam(value = "categoryName", required = false) String categoryName) {
+        try {
+            List<Category> categories = categoryService.searchCategory(categoryName);
+            if (categories.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>("No se encontraron las categorias con el nombre proporcionado.", null));
+            }
+            return ResponseEntity.ok(categories);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("Parámetro de búsqueda inválido.", null));
         }
     }
 

@@ -3,6 +3,7 @@ package com.musichouse.api.music.service;
 import com.musichouse.api.music.dto.dto_entrance.ThemeDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ThemeDtoExit;
 import com.musichouse.api.music.dto.dto_modify.ThemeDtoModify;
+import com.musichouse.api.music.entity.Category;
 import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.entity.Theme;
 import com.musichouse.api.music.exception.CategoryAssociatedException;
@@ -76,6 +77,12 @@ public class ThemeService implements ThemeInterface {
 
         themeRepository.deleteById(idTheme);
     }
-
+    public List<Theme> searchTheme(String themeName) throws IllegalArgumentException {
+        if (themeName != null) {
+            return themeRepository.findBythemeNameContaining(themeName);
+        } else {
+            throw new IllegalArgumentException("Parámetro de búsqueda inválido");
+        }
+    }
 
 }

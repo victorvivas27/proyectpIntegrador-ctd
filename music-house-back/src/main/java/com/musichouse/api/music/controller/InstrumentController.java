@@ -3,6 +3,7 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.InstrumentDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.InstrumentDtoExit;
 import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
+import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.InstrumentService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -38,7 +39,7 @@ public class InstrumentController {
     public ResponseEntity<ApiResponse<List<InstrumentDtoExit>>> allInstruments() {
         List<InstrumentDtoExit> instrumentDtoExits = instrumentService.getAllInstruments();
         ApiResponse<List<InstrumentDtoExit>> response =
-                new ApiResponse<>("Lista de Instrumentos exitosa.",instrumentDtoExits);
+                new ApiResponse<>("Lista de Instrumentos exitosa.", instrumentDtoExits);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -76,6 +77,21 @@ public class InstrumentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+        }
+    }
+    @GetMapping("/find")
+    public ResponseEntity<?> searchInstruments(
+            @RequestParam(value = "name", required = false) String name) {
+        try {
+            List<Instrument> instruments = instrumentService.searchInstruments(name);
+            if (instruments.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>("No se encontraron instrumentos con el nombre proporcionado.", null));
+            }
+            return ResponseEntity.ok(instruments);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("Parámetro de búsqueda inválido.", null));
         }
     }
 }

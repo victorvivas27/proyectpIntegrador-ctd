@@ -76,4 +76,12 @@ public class CategoryService implements CategoryInterface {
 
         categoryRepository.deleteById(idCategory);
     }
+
+    public List<Category> searchCategory(String categoryName) throws IllegalArgumentException {
+        if (categoryName != null) {
+            return categoryRepository.findBycategoryNameContaining(categoryName);
+        } else {
+            throw new IllegalArgumentException("Parámetro de búsqueda inválido");
+        }
+    }
 }

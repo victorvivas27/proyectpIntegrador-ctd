@@ -1,8 +1,11 @@
 package com.musichouse.api.music.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -67,6 +70,7 @@ public class Instrument {
      */
     @ManyToOne
     @JoinColumn(name = "id_category")
+    @JsonIgnore
     private Category category;
 
     /**
@@ -74,12 +78,14 @@ public class Instrument {
      */
     @ManyToOne
     @JoinColumn(name = "id_theme")
+    @JsonIgnore
     private Theme theme;
 
     /**
      * Lista de URLs de imágenes asociadas al instrumento.
      */
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<ImageUrls> imageUrls = new ArrayList<>();
 
     /**
@@ -87,6 +93,7 @@ public class Instrument {
      */
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "characteristics_id", referencedColumnName = "id_characteristics")
+    @JsonIgnore
     private Characteristics characteristics;
 
     /**

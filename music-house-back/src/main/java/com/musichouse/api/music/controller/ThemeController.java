@@ -3,6 +3,8 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.ThemeDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ThemeDtoExit;
 import com.musichouse.api.music.dto.dto_modify.ThemeDtoModify;
+import com.musichouse.api.music.entity.Category;
+import com.musichouse.api.music.entity.Theme;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.ThemeService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -79,6 +81,21 @@ public class ThemeController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
+        }
+    }
+    @GetMapping("/find")
+    public ResponseEntity<?> searchTheme(
+            @RequestParam(value = "themeName", required = false) String themeName) {
+        try {
+            List<Theme> themes = themeService.searchTheme(themeName);
+            if (themes.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponse<>("No se encontraron las tematicas con el nombre proporcionado.", null));
+            }
+            return ResponseEntity.ok(themes);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>("Parámetro de búsqueda inválido.", null));
         }
     }
 }
