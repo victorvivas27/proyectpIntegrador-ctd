@@ -40,7 +40,7 @@ public class Instrument {
     /**
      * Descripción detallada del instrumento.
      */
-    @Column(name = "description", length = 255)
+    @Column(name = "description", length = 1024)
     private String description;
 
     /**

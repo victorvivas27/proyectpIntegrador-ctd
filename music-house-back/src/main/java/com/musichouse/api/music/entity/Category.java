@@ -32,7 +32,7 @@ public class Category {
     /**
      * Descripción de la categoría.
      */
-    @Column(name = "description", length = 255)
+    @Column(name = "description", length = 1024)
     private String description;
 
     /**

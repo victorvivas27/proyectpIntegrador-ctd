@@ -20,7 +20,7 @@ public class InstrumentDtoEntrance {
     @Size(max = 100, message = "El nombre del instrumento debe tener como máximo {max} caracteres")
     private String name;
 
-    @Size(max = 255, message = "La descripción del instrumento debe tener como máximo {max} caracteres")
+    @Size(max = 1024, message = "La descripción del instrumento debe tener como máximo {max} caracteres")
     private String description;
 
     @NotNull(message = "El precio de alquiler es obligatorio")

@@ -22,6 +22,6 @@ public class ThemeDtoModify {
     @Size(max = 100, message = "El nombre de la tematica debe tener como máximo {max} caracteres")
     private String themeName;
 
-    @Size(max = 255, message = "La descripción de la tematica debe tener como máximo {max} caracteres")
+    @Size(max = 1024, message = "La descripción de la tematica debe tener como máximo {max} caracteres")
     private String description;
 }
