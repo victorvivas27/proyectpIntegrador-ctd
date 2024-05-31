@@ -44,19 +44,19 @@ public class AvailableDateService implements AvailableDateInterface {
         AvailableDate availableDate;
         if (existingAvailableDateOpt.isPresent()) {
             availableDate = existingAvailableDateOpt.get();
-            availableDate.setAvailable(availableDateDtoEntrance.isAvailable());
+            availableDate.setAvailable(availableDateDtoEntrance.getAvailable());
         } else {
             availableDate = new AvailableDate();
             availableDate.setDateAvailable(availableDateDtoEntrance.getDateAvailable());
             availableDate.setInstrument(instrument);
-            availableDate.setAvailable(availableDateDtoEntrance.isAvailable());
+            availableDate.setAvailable(availableDateDtoEntrance.getAvailable());
         }
         AvailableDate availableDateSave = availableDateRepository.save(availableDate);
         AvailableDateDtoExit availableDateDtoExit = new AvailableDateDtoExit();
         availableDateDtoExit.setIdAvailableDate(availableDateSave.getIdAvailableDate());
         availableDateDtoExit.setRegistDate(new Date());
         availableDateDtoExit.setDateAvailable(availableDateSave.getDateAvailable());
-        availableDateDtoExit.setAvailable(availableDateSave.isAvailable());
+        availableDateDtoExit.setAvailable(availableDateSave.getAvailable());
         availableDateDtoExit.setIdInstrument(instrumentId);
         return availableDateDtoExit;
     }
@@ -116,7 +116,7 @@ public class AvailableDateService implements AvailableDateInterface {
             throw new ResourceNotFoundException("No hay fechas disponibles para la fecha: " + dateAvailable);
         }
         return availableDates.stream()
-                .filter(AvailableDate::isAvailable)
+                .filter(AvailableDate::getAvailable)
                 .map(availableDate -> mapper.map(availableDate, AvailableDateDtoExit.class))
                 .collect(Collectors.toList());
     }
@@ -137,7 +137,7 @@ public class AvailableDateService implements AvailableDateInterface {
                             idInstrument + " y la fecha: " + dateAvailable);
         }
         AvailableDate availableDate = optionalAvailableDate.get();
-        if (!availableDate.isAvailable()) {
+        if (!availableDate.getAvailable()) {
             throw new ResourceNotFoundException
                     ("La fecha: " + dateAvailable + " no está disponible para el instrumento con ID: " + idInstrument);
         }
@@ -156,7 +156,7 @@ public class AvailableDateService implements AvailableDateInterface {
             throw new ResourceNotFoundException("No hay fechas disponibles en el rango de fechas proporcionado.");
         }
         return availableDates.stream()
-                .filter(AvailableDate::isAvailable)
+                .filter(AvailableDate::getAvailable)
                 .map(availableDate -> mapper.map(availableDate, AvailableDateDtoExit.class))
                 .collect(Collectors.toList());
     }
@@ -176,7 +176,7 @@ public class AvailableDateService implements AvailableDateInterface {
                     + idInstrument + " en el rango de fechas proporcionado.");
         }
         return availableDates.stream()
-                .filter(AvailableDate::isAvailable)
+                .filter(AvailableDate::getAvailable)
                 .map(availableDate -> mapper.map(availableDate, AvailableDateDtoExit.class))
                 .collect(Collectors.toList());
     }
