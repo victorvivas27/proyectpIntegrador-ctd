@@ -52,6 +52,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/imageurls/**").permitAll()
                         // Rutas de Roles (todas las operaciones)
                         .requestMatchers("/api/roles/**").permitAll()
+                        // Rutas de fechas disponibles (todas las operaciones)
+                        .requestMatchers("/api/available-dates/**").permitAll()
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
