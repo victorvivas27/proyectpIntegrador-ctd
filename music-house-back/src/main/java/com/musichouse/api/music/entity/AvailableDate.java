@@ -37,7 +37,7 @@ public class AvailableDate {
      * Indica si el instrumento está disponible en la fecha especificada.
      */
     @Column(name = "available", nullable = false)
-    private boolean available;
+    private Boolean available;
 
     /**
      * El instrumento asociado con esta fecha disponible.

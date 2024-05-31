@@ -22,5 +22,6 @@ public class AvailableDateDtoEntrance {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateAvailable;
 
-    private boolean available;
+    @NotNull(message = "El estado no puede ser nulo")
+    private Boolean available;
 }

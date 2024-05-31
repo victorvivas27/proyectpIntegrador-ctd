@@ -24,5 +24,6 @@ public class AvailableDateDtoModify {
     @NotNull(message = "El id del instrumento es obligatorio")
     private Long idInstrument;
 
-    private boolean available;
+    @NotNull(message = "El estado no puede ser nulo")
+    private Boolean available;
 }

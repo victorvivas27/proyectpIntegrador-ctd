@@ -17,5 +17,5 @@ public class AvailableDateDtoExit {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date registDate;
     private LocalDate dateAvailable;
-    private boolean available;
+    private Boolean available;
 }

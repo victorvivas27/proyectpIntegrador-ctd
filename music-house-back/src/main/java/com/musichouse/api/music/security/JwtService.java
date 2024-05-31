@@ -1,6 +1,7 @@
 package com.musichouse.api.music.security;
 
 import com.musichouse.api.music.entity.User;
+import com.musichouse.api.music.util.RoleConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -104,7 +105,8 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         final String role = getClaim(token, claims -> claims.get("role", String.class));
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token) && role.equals("ADMIN") || role.equals("USER"));
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token)
+                && role.equals(RoleConstants.ADMIN) || role.equals(RoleConstants.USER));
     }
 
     private Claims getAllClaims(String token) {
