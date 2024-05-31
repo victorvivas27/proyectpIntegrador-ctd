@@ -26,4 +26,9 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, Lo
 
     List<AvailableDate> findByInstrumentIdInstrumentAndDateAvailableBetween(Long idInstrument, LocalDate startDate, LocalDate endDate);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM AvailableDate a WHERE a.dateAvailable < :today")
+    void deleteByDateAvailableBefore(LocalDate today);
+
 }

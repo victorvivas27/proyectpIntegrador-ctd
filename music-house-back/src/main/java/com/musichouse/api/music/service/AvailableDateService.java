@@ -11,6 +11,7 @@ import com.musichouse.api.music.repository.AvailableDateRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -179,5 +180,11 @@ public class AvailableDateService implements AvailableDateInterface {
                 .filter(AvailableDate::getAvailable)
                 .map(availableDate -> mapper.map(availableDate, AvailableDateDtoExit.class))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deletePastAvailableDates() {
+        LocalDate today = LocalDate.now();
+        availableDateRepository.deleteByDateAvailableBefore(today);
     }
 }
