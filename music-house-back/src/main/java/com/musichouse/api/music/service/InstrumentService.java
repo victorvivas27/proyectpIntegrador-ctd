@@ -129,34 +129,7 @@ public class InstrumentService implements InstrumentInterface {
         }
     }
 
-    public List<Instrument> searchInstruments(String name) throws IllegalArgumentException {
-        if (name != null) {
-            return instrumentRepository.findByNameContaining(name);
-        } else {
-            throw new IllegalArgumentException("Parámetro de búsqueda inválido");
-        }
+    public List<Instrument> searchInstruments(String name) {
+        return instrumentRepository.findByNameContainingIgnoreCase(name);
     }
-
-    public List<Instrument> findInstrumentsByRentalPriceLessThan(BigDecimal maxPrice) {
-        if (maxPrice == null || maxPrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("El precio máximo debe ser un valor positivo.");
-        }
-        return instrumentRepository.findByRentalPriceLessThan(maxPrice.add(BigDecimal.ONE));
-    }
-
-    public List<Instrument> findInstrumentsByRentalPriceGreaterThan(BigDecimal minPrice) {
-        if (minPrice == null || minPrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("El precio mínimo debe ser un valor positivo.");
-        }
-        return instrumentRepository.findByRentalPriceGreaterThan(minPrice);
-    }
-
-    public List<Instrument> findInstrumentsByRentalPriceBetween(BigDecimal minPrice, BigDecimal maxPrice) {
-        if (minPrice == null || maxPrice == null || minPrice.compareTo(maxPrice) > 0 ||
-                minPrice.compareTo(BigDecimal.ZERO) < 0 || maxPrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("El rango de precios es inválido.");
-        }
-        return instrumentRepository.findByRentalPriceBetween(minPrice, maxPrice);
-    }
-
 }

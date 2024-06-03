@@ -4,7 +4,6 @@ import com.musichouse.api.music.dto.dto_entrance.CategoryDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.CategoryDtoExit;
 import com.musichouse.api.music.dto.dto_modify.CategoryDtoModify;
 import com.musichouse.api.music.entity.Category;
-import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.CategoryService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -83,9 +82,9 @@ public class CategoryController {
                     .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
-    @GetMapping("/find")
-    public ResponseEntity<?> searchTheme(
-            @RequestParam(value = "categoryName", required = false) String categoryName) {
+
+    @GetMapping("/find/nameCategory/{categoryName}")
+    public ResponseEntity<?> searchTheme(@PathVariable String categoryName) {
         try {
             List<Category> categories = categoryService.searchCategory(categoryName);
             if (categories.isEmpty()) {
@@ -98,5 +97,4 @@ public class CategoryController {
                     .body(new ApiResponse<>("Parámetro de búsqueda inválido.", null));
         }
     }
-
 }

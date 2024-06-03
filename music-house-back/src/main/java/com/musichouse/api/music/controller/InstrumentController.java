@@ -13,11 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -83,40 +79,16 @@ public class InstrumentController {
                     .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
         }
     }
-    @GetMapping("/find")
-    public ResponseEntity<?> searchInstruments(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "maxPrice", required = false) BigDecimal maxPrice,
-            @RequestParam(value = "minPrice", required = false) BigDecimal minPrice
-    ) {
+
+    @GetMapping("/find/name/{name}")
+    public ResponseEntity<?> searchInstrumentsByName(@PathVariable("name") String name) {
         try {
-            List<Instrument> instruments = new ArrayList<>();
-
-            if (name != null) {
-                List<Instrument> instrumentsByName = instrumentService.searchInstruments(name);
-                instruments.addAll(instrumentsByName);
-            }
-
-            if (maxPrice != null && minPrice != null) {
-                List<Instrument> instrumentsByPriceRange = instrumentService.findInstrumentsByRentalPriceBetween(minPrice, maxPrice);
-                instruments.addAll(instrumentsByPriceRange);
-            } else if (maxPrice != null) {
-                List<Instrument> instrumentsByMaxPrice = instrumentService.findInstrumentsByRentalPriceLessThan(maxPrice);
-                instruments.addAll(instrumentsByMaxPrice);
-            } else if (minPrice != null) {
-                List<Instrument> instrumentsByMinPrice = instrumentService.findInstrumentsByRentalPriceGreaterThan(minPrice);
-                instruments.addAll(instrumentsByMinPrice);
-            }
-
-            Set<Instrument> uniqueInstrumentsSet = new HashSet<>(instruments);
-            List<Instrument> uniqueInstruments = new ArrayList<>(uniqueInstrumentsSet);
-
-            if (uniqueInstruments.isEmpty()) {
+            List<Instrument> instruments = instrumentService.searchInstruments(name);
+            if (instruments.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponse<>("No se encontraron instrumentos con los criterios proporcionados.", null));
+                        .body(new ApiResponse<>("No se encontraron instrumentos con el nombre proporcionado.", null));
             }
-
-            return ResponseEntity.ok(uniqueInstruments);
+            return ResponseEntity.ok(instruments);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>("Parámetro de búsqueda inválido.", null));

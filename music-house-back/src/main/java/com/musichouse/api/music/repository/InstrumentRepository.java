@@ -13,8 +13,5 @@ import java.util.List;
 public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
     List<Instrument> findByCategory(Category category);
     List<Instrument> findByTheme(Theme theme);
-    List<Instrument> findByNameContaining(String name);
-    List<Instrument> findByRentalPriceLessThan(BigDecimal maxPrice);
-    List<Instrument> findByRentalPriceGreaterThan(BigDecimal minPrice);
-    List<Instrument> findByRentalPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+    List<Instrument> findByNameContainingIgnoreCase(String name);
 }
