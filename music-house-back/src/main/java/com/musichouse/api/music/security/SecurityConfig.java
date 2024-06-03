@@ -54,6 +54,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/roles/**").permitAll()
                         // Rutas de fechas disponibles (todas las operaciones)
                         .requestMatchers("/api/available-dates/**").permitAll()
+                        // Rutas de Favoritos (todas las operaciones)
+                        .requestMatchers("/api/favorite/**").permitAll()
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
