@@ -12,9 +12,5 @@ public interface FavoriteInterface {
 
     List<FavoriteDtoExit> getAllFavorite();
 
-    FavoriteDtoExit getFavoriteById(Long id) throws ResourceNotFoundException;
-
-    FavoriteDtoExit updateFavorite(Long idInstrument, FavoriteDtoEntrance favoriteDtoEntrance) throws ResourceNotFoundException;
-
     public void deleteFavorite(Long idInstrument, Long idUser, Long idFavorite) throws ResourceNotFoundException;
 }

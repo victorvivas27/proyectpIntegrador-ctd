@@ -88,15 +88,6 @@ public class FavoriteService implements FavoriteInterface {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public FavoriteDtoExit getFavoriteById(Long id) throws ResourceNotFoundException {
-        return null;
-    }
-
-    @Override
-    public FavoriteDtoExit updateFavorite(Long idInstrument, FavoriteDtoEntrance favoriteDtoEntrance) throws ResourceNotFoundException {
-        return null;
-    }
 
     @Override
     public void deleteFavorite(Long idInstrument, Long idUser, Long idFavorite) throws ResourceNotFoundException {

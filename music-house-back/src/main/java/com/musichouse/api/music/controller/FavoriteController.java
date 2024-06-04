@@ -43,26 +43,11 @@ public class FavoriteController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    /*@DeleteMapping("/delete")
-    public ResponseEntity<ApiResponse<String>> deleteFavorite(
-            @RequestParam Long idInstrument, @RequestParam Long idUser, @RequestParam Long idFavorite) {
-        try {
-            favoriteService.deleteFavorite(idUser, idInstrument, idFavorite);
-            return ResponseEntity.ok(new ApiResponse<>("Favorito eliminado exitosamente.", null));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(e.getMessage(), null));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
-        }
-    }*/
-
     @DeleteMapping("/delete/{idInstrument}/{idUser}/{idFavorite}")
     public ResponseEntity<ApiResponse<String>> deleteAvailableDate(
-            @PathVariable Long idInstrument,@PathVariable Long idUser, @PathVariable Long idFavorite) {
+            @PathVariable Long idInstrument, @PathVariable Long idUser, @PathVariable Long idFavorite) {
         try {
-            favoriteService.deleteFavorite(idInstrument,idUser,idFavorite);
+            favoriteService.deleteFavorite(idInstrument, idUser, idFavorite);
             return ResponseEntity.ok(new ApiResponse<>(" Favorito disponible eliminada exitosamente.", null));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
