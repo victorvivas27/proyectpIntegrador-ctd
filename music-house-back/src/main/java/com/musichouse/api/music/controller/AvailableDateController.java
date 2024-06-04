@@ -7,7 +7,6 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.AvailableDateService;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,6 @@
 package com.musichouse.api.music.dto.dto_modify;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
@@ -14,16 +15,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AvailableDateDtoModify {
-    @NotNull(message = "El idAvailableDate no puede ser nulo")
+    @NotNull(message = "El id de fecha disponible no puede ser nulo")
     private Long idAvailableDate;
 
-    @NotNull(message = "La fecha no puede ser nula")
-    @FutureOrPresent(message = "La fecha debe ser en el presente o en el futuro")
+    @FutureOrPresent(message = "La fecha no puede ser anterior al dia de hoy")
+    @NotNull(message = "Fecha disponible no puede ser nula")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateAvailable;
 
     @NotNull(message = "El id del instrumento es obligatorio")
     private Long idInstrument;
 
-    @NotNull(message = "El estado no puede ser nulo")
+    @NotNull(message = "Disponible no puede ser nulo")
     private Boolean available;
 }
