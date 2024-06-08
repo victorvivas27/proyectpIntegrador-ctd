@@ -94,12 +94,17 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAllInstrumentsOfADates(dateAvailable);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
-
     @GetMapping("/find/all/{dateAvailable}/{idInstrument}")
     public ResponseEntity<ApiResponse<List<AvailableDateDtoExit>>> findAllAvailableDatesByInstrumentId(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateAvailable,
@@ -110,6 +115,12 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAllAvailableDatesByInstrumentId(dateAvailable, idInstrument);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
@@ -128,6 +139,9 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAllInstrumentByDatesRange(startDate, endDate);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse<>(e.getMessage(), null));
@@ -150,9 +164,16 @@ public class AvailableDateController {
             }
             List<AvailableDateDtoExit> availableDates = availableDateService.findAvailableDatesByInstrumentIDAndRange(startDate, endDate, idInstrument);
             return ResponseEntity.ok(new ApiResponse<>("Lista de fechas disponibles exitosa.", availableDates));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
+
 }
