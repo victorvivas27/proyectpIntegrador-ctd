@@ -50,4 +50,9 @@ public class GlobalExeceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse<>(e.getMessage(), null));
     }
+    @ExceptionHandler( FavoriteAlreadyExistsException .class)
+    public ResponseEntity<?> FavoriteAlreadyExistsException ( FavoriteAlreadyExistsException  e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse<>(e.getMessage(), null));
+    }
 }

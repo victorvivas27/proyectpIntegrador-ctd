@@ -2,6 +2,8 @@ package com.musichouse.api.music.controller;
 
 import com.musichouse.api.music.dto.dto_entrance.FavoriteDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.FavoriteDtoExit;
+import com.musichouse.api.music.dto.dto_exit.IsFavoriteExit;
+import com.musichouse.api.music.exception.FavoriteAlreadyExistsException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.FavoriteService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -25,9 +27,12 @@ public class FavoriteController {
         try {
             FavoriteDtoExit favoriteDtoExit = favoriteService.addFavorite(favoriteDtoEntrance);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>("Instrumento Agregado a favoritos  exitosamente.", favoriteDtoExit));
+                    .body(new ApiResponse<>("Instrumento Agregado a favoritos exitosamente.", favoriteDtoExit));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        } catch (FavoriteAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -44,11 +49,11 @@ public class FavoriteController {
     }
 
     @DeleteMapping("/delete/{idInstrument}/{idUser}/{idFavorite}")
-    public ResponseEntity<ApiResponse<String>> deleteAvailableDate(
+    public ResponseEntity<ApiResponse<IsFavoriteExit>> deleteAvailableDate(
             @PathVariable Long idInstrument, @PathVariable Long idUser, @PathVariable Long idFavorite) {
         try {
-            favoriteService.deleteFavorite(idInstrument, idUser, idFavorite);
-            return ResponseEntity.ok(new ApiResponse<>(" Favorito disponible eliminada exitosamente.", null));
+            ApiResponse<IsFavoriteExit> response = favoriteService.deleteFavorite(idInstrument, idUser, idFavorite);
+            return ResponseEntity.ok(response);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>(e.getMessage(), null));

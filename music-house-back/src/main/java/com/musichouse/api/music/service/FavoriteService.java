@@ -2,15 +2,18 @@ package com.musichouse.api.music.service;
 
 import com.musichouse.api.music.dto.dto_entrance.FavoriteDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.FavoriteDtoExit;
+import com.musichouse.api.music.dto.dto_exit.IsFavoriteExit;
 import com.musichouse.api.music.entity.Favorite;
 import com.musichouse.api.music.entity.ImageUrls;
 import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.entity.User;
+import com.musichouse.api.music.exception.FavoriteAlreadyExistsException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.FavoriteInterface;
 import com.musichouse.api.music.repository.FavoriteRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
 import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.util.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -44,7 +47,7 @@ public class FavoriteService implements FavoriteInterface {
 
         Favorite existingFavorite = favoriteRepository.findByUserAndInstrument(user, instrument);
         if (existingFavorite != null) {
-            throw new IllegalArgumentException("El instrumento ya está agregado como favorito para este usuario");
+            throw new FavoriteAlreadyExistsException("El instrumento ya está agregado como favorito para este usuario");
         }
 
         Favorite favorite = new Favorite();
@@ -90,7 +93,7 @@ public class FavoriteService implements FavoriteInterface {
 
 
     @Override
-    public void deleteFavorite(Long idInstrument, Long idUser, Long idFavorite) throws ResourceNotFoundException {
+    public ApiResponse deleteFavorite(Long idInstrument, Long idUser, Long idFavorite) throws ResourceNotFoundException {
         User user = userRepository.findById(idUser)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con ID " + idUser));
         Instrument instrument = instrumentRepository.findById(idInstrument)
@@ -101,6 +104,11 @@ public class FavoriteService implements FavoriteInterface {
             throw new ResourceNotFoundException("Favorito no encontrado para el usuario con ID " + idUser +
                     " y el instrumento con ID " + idInstrument);
         }
+        IsFavoriteExit isFavoriteExit = new IsFavoriteExit();
+        isFavoriteExit.setIsFavorite(false);
         favoriteRepository.delete(favorite);
+        ApiResponse<IsFavoriteExit> response = new ApiResponse<>("Favorito eliminado exitosamente.", isFavoriteExit);
+
+        return response;
     }
 }
