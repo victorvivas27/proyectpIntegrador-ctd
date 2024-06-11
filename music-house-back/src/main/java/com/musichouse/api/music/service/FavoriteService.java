@@ -91,6 +91,27 @@ public class FavoriteService implements FavoriteInterface {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<FavoriteDtoExit> getFavoritesByUserId(Long userId) throws ResourceNotFoundException {
+        List<Favorite> favorites = favoriteRepository.findByUserId(userId);
+        if (favorites.isEmpty()) {
+            throw new ResourceNotFoundException("No favorites found for user id: " + userId);
+        }
+        return favorites.stream()
+                .map(favorite -> {
+                    FavoriteDtoExit favoriteDtoExit = mapper.map(favorite, FavoriteDtoExit.class);
+                    String imageUrl = "";
+                    Instrument instrument = favorite.getInstrument();
+                    List<ImageUrls> imageUrls = instrument.getImageUrls();
+                    if (imageUrls != null && !imageUrls.isEmpty()) {
+                        imageUrl = imageUrls.get(0).getImageUrl();
+                    }
+                    favoriteDtoExit.setImageUrl(imageUrl);
+                    return favoriteDtoExit;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public ApiResponse deleteFavorite(Long idInstrument, Long idUser, Long idFavorite) throws ResourceNotFoundException {

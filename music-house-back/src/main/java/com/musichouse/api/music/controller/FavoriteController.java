@@ -48,6 +48,17 @@ public class FavoriteController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/search/{userId}")
+    public ResponseEntity<?> searchFavoritesByUserId(@PathVariable Long userId) {
+        try {
+            List<FavoriteDtoExit> favoriteDtoExits = favoriteService.getFavoritesByUserId(userId);
+            return ResponseEntity.ok(new ApiResponse<>("Favoritos encontrados con éxito para el usuario con ID: " + userId, favoriteDtoExits));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>("No se encontraron favoritos para el usuario con id: " + userId, null));
+        }
+    }
+
     @DeleteMapping("/delete/{idInstrument}/{idUser}/{idFavorite}")
     public ResponseEntity<ApiResponse<IsFavoriteExit>> deleteAvailableDate(
             @PathVariable Long idInstrument, @PathVariable Long idUser, @PathVariable Long idFavorite) {
