@@ -8,11 +8,13 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import java.util.List;
 
 public interface AvailableDateInterface {
-    AvailableDateDtoExit addAvailableDate(AvailableDateDtoEntrance availableDateDtoEntrance) throws ResourceNotFoundException;
+    public List<AvailableDateDtoExit> addAvailableDates(List<AvailableDateDtoEntrance> availableDatesDtoList)throws ResourceNotFoundException;
 
     List<AvailableDateDtoExit> getAllAvailableDates();
 
     AvailableDateDtoExit getAvailableDateById(Long id) throws ResourceNotFoundException;
+
+    List<AvailableDateDtoExit> findByInstrumentIdInstrument(Long idInstrument) throws ResourceNotFoundException;
 
     AvailableDateDtoExit updateAvailableDate(AvailableDateDtoModify availableDateDtoModify) throws ResourceNotFoundException;
 

@@ -38,6 +38,11 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, Lo
      */
     List<AvailableDate> findByInstrumentIdInstrumentAndDateAvailableBetween(Long idInstrument, LocalDate startDate, LocalDate endDate);
 
+    // Agrega este método personalizado para encontrar fechas disponibles por ID de instrumento
+    List<AvailableDate> findByInstrumentIdInstrument(Long idInstrument);
+
+    boolean existsByInstrumentIdInstrumentAndAvailableFalse(Long instrumentId);
+
     /**
      * Elimina todas las entidades AvailableDate cuya fechaAvailable sea anterior a la fecha especificada.
      *

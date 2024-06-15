@@ -74,16 +74,19 @@ public class InstrumentController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>("El instrumento con el ID proporcionado no se encontró.", null));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 
     @GetMapping("/find/name/{name}")
     public ResponseEntity<?> searchInstrumentsByName(@PathVariable("name") String name) {
         try {
-            List<Instrument> instruments = instrumentService.searchInstruments(name);
+            List<InstrumentDtoExit> instruments = instrumentService.searchInstruments(name);
             if (instruments.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new ApiResponse<>("No se encontraron instrumentos con el nombre proporcionado.", null));

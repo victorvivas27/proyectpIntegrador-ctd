@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -30,36 +31,39 @@ public class AvailableDateService implements AvailableDateInterface {
     private final ModelMapper mapper;
 
     @Override
-    public AvailableDateDtoExit addAvailableDate(AvailableDateDtoEntrance availableDateDtoEntrance)
-            throws ResourceNotFoundException {
-        Long instrumentId = availableDateDtoEntrance.getIdInstrument();
-        if (instrumentId == null) {
-            throw new IllegalArgumentException("El ID del instrumento no puede ser nulo");
-        }
-        Instrument instrument = instrumentRepository.findById(instrumentId)
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
-        Optional<AvailableDate> existingAvailableDateOpt =
-                availableDateRepository.findByInstrumentIdInstrumentAndDateAvailable
-                        (instrumentId, availableDateDtoEntrance.getDateAvailable());
+    public List<AvailableDateDtoExit> addAvailableDates(List<AvailableDateDtoEntrance> availableDatesDtoList) throws ResourceNotFoundException {
+        List<AvailableDateDtoExit> addedDates = new ArrayList<>();
+        for (AvailableDateDtoEntrance availableDateDto : availableDatesDtoList) {
+            Long instrumentId = availableDateDto.getIdInstrument();
+            if (instrumentId == null) {
+                throw new IllegalArgumentException("El ID del instrumento no puede ser nulo");
+            }
+            Instrument instrument = instrumentRepository.findById(instrumentId)
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
+            Optional<AvailableDate> existingAvailableDateOpt =
+                    availableDateRepository.findByInstrumentIdInstrumentAndDateAvailable
+                            (instrumentId, availableDateDto.getDateAvailable());
 
-        AvailableDate availableDate;
-        if (existingAvailableDateOpt.isPresent()) {
-            availableDate = existingAvailableDateOpt.get();
-            availableDate.setAvailable(availableDateDtoEntrance.getAvailable());
-        } else {
-            availableDate = new AvailableDate();
-            availableDate.setDateAvailable(availableDateDtoEntrance.getDateAvailable());
-            availableDate.setInstrument(instrument);
-            availableDate.setAvailable(availableDateDtoEntrance.getAvailable());
+            AvailableDate availableDate;
+            if (existingAvailableDateOpt.isPresent()) {
+                availableDate = existingAvailableDateOpt.get();
+                availableDate.setAvailable(availableDateDto.getAvailable());
+            } else {
+                availableDate = new AvailableDate();
+                availableDate.setDateAvailable(availableDateDto.getDateAvailable());
+                availableDate.setInstrument(instrument);
+                availableDate.setAvailable(availableDateDto.getAvailable());
+            }
+            AvailableDate availableDateSave = availableDateRepository.save(availableDate);
+            AvailableDateDtoExit availableDateDtoExit = new AvailableDateDtoExit();
+            availableDateDtoExit.setIdAvailableDate(availableDateSave.getIdAvailableDate());
+            availableDateDtoExit.setRegistDate(new Date());
+            availableDateDtoExit.setDateAvailable(availableDateSave.getDateAvailable());
+            availableDateDtoExit.setAvailable(availableDateSave.getAvailable());
+            availableDateDtoExit.setIdInstrument(instrumentId);
+            addedDates.add(availableDateDtoExit);
         }
-        AvailableDate availableDateSave = availableDateRepository.save(availableDate);
-        AvailableDateDtoExit availableDateDtoExit = new AvailableDateDtoExit();
-        availableDateDtoExit.setIdAvailableDate(availableDateSave.getIdAvailableDate());
-        availableDateDtoExit.setRegistDate(new Date());
-        availableDateDtoExit.setDateAvailable(availableDateSave.getDateAvailable());
-        availableDateDtoExit.setAvailable(availableDateSave.getAvailable());
-        availableDateDtoExit.setIdInstrument(instrumentId);
-        return availableDateDtoExit;
+        return addedDates;
     }
 
     @Override
@@ -75,6 +79,24 @@ public class AvailableDateService implements AvailableDateInterface {
         AvailableDate availableDate = availableDateRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Fecha disponible no encontrada con el id: " + id));
         return mapper.map(availableDate, AvailableDateDtoExit.class);
+    }
+
+    /**
+     * encontrar todas las fechas disponibles por ID de instrumento
+     */
+    @Transactional
+    @Override
+    public List<AvailableDateDtoExit> findByInstrumentIdInstrument(Long idInstrument) throws ResourceNotFoundException {
+        Instrument instrument = instrumentRepository.findById(idInstrument)
+                .orElseThrow(() -> new ResourceNotFoundException("Instrumento no encontrado con el ID: " + idInstrument));
+        List<AvailableDate> availableDates = availableDateRepository.findByInstrumentIdInstrument(idInstrument);
+        if (availableDates.isEmpty()) {
+            throw new ResourceNotFoundException("No hay fechas disponibles para el instrumento con ID: " + idInstrument);
+        }
+        return availableDates.stream()
+                .filter(availableDate -> availableDate.getAvailable())
+                .map(availableDate -> mapper.map(availableDate, AvailableDateDtoExit.class))
+                .collect(Collectors.toList());
     }
 
     @Override

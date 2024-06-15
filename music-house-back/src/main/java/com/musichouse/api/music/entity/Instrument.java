@@ -3,10 +3,7 @@ package com.musichouse.api.music.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
@@ -95,6 +92,14 @@ public class Instrument {
     @JoinColumn(name = "characteristics_id", referencedColumnName = "id_characteristics")
     @JsonIgnore
     private Characteristics characteristics;
+
+    /**
+     * Lista de fechas y horas disponibles para alquilar el instrumento.
+     */
+
+    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<AvailableDate> availableDates;
 
     /**
      * Anotación que marca el campo como una fecha de creación automática.
