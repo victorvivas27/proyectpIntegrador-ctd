@@ -98,7 +98,7 @@ public class Instrument {
      */
 
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @ToString.Exclude
+    @JsonIgnore
     private List<AvailableDate> availableDates;
 
     /**
