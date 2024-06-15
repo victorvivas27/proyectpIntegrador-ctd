@@ -97,7 +97,7 @@ public class Instrument {
      * Lista de fechas y horas disponibles para alquilar el instrumento.
      */
 
-    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<AvailableDate> availableDates;
 
