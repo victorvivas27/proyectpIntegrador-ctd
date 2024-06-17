@@ -7,10 +7,7 @@ import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.InstrumentInterface;
-import com.musichouse.api.music.repository.AvailableDateRepository;
-import com.musichouse.api.music.repository.CategoryRepository;
-import com.musichouse.api.music.repository.InstrumentRepository;
-import com.musichouse.api.music.repository.ThemeRepository;
+import com.musichouse.api.music.repository.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -30,6 +27,7 @@ public class InstrumentService implements InstrumentInterface {
     private final CategoryRepository categoryRepository;
     private final ThemeRepository themeRepository;
     private final AvailableDateRepository availableDateRepository;
+    private  final FavoriteRepository favoriteRepository;
 
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {
@@ -128,11 +126,15 @@ public class InstrumentService implements InstrumentInterface {
     public void deleteInstrument(Long idInstrument) throws ResourceNotFoundException {
         Instrument instrument = instrumentRepository.findById(idInstrument)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID proporcionado"));
+
         boolean hasReservedDates = availableDateRepository.existsByInstrumentIdInstrumentAndAvailableFalse(idInstrument);
+
         if (hasReservedDates) {
             throw new IllegalArgumentException("No se puede eliminar el instrumento porque tiene fechas reservadas.");
         }
-        instrumentRepository.deleteById(idInstrument);
+        favoriteRepository.deleteByInstrumentIdInstrument(idInstrument);
+        // Si no tiene fechas reservadas, se elimina sin importar si está marcado como favorito
+        instrumentRepository.delete(instrument);
     }
 
     public List<InstrumentDtoExit> searchInstruments(String name) {
