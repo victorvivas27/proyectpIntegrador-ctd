@@ -11,7 +11,7 @@ public interface PrivacyPolicyInterface {
 
     PrivacyPolicyDtoExit createPrivacyPolicy(PrivacyPolicyDtoEntrance privacyPolicyDtoEntrance);
 
-    List< PrivacyPolicyDtoExit> getAllPrivacyPolicy();
+    List<PrivacyPolicyDtoExit> getAllPrivacyPolicy();
 
     PrivacyPolicyDtoExit updatePrivacyPolicy(PrivacyPolicyDtoModify privacyPolicyDtoModify) throws ResourceNotFoundException;
 

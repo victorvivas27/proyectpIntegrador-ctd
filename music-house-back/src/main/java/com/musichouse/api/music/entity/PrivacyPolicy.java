@@ -19,10 +19,10 @@ public class PrivacyPolicy {
     @Column(name = "id_privacy_policy")
     private Long idPrivacyPolicy;
 
-    @Column(name = "title",nullable = false,columnDefinition = "LONGTEXT")
+    @Column(name = "title", nullable = false, columnDefinition = "LONGTEXT")
     private String title;
 
-    @Column(name = "content",nullable = false,columnDefinition = "LONGTEXT")
+    @Column(name = "content", nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
     @CreationTimestamp

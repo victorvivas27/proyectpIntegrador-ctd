@@ -6,7 +6,6 @@ import com.musichouse.api.music.entity.Theme;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -16,7 +15,7 @@ public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
      *
      * @param category la categoría de los instrumentos que se desea encontrar.
      * @return una lista de instrumentos que pertenecen a la categoría especificada.
-     *
+     * <p>
      * Ejemplo en la base de datos:
      * Si tienes una categoría con el nombre "Cuerdas", la consulta JPQL sería:
      * SELECT i FROM Instrument i WHERE i.category = :category
@@ -28,7 +27,7 @@ public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
      *
      * @param theme el tema de los instrumentos que se desea encontrar.
      * @return una lista de instrumentos que pertenecen al tema especificado.
-     *
+     * <p>
      * Ejemplo en la base de datos:
      * Si tienes un tema con el nombre "Clásico", la consulta JPQL sería:
      * SELECT i FROM Instrument i WHERE i.theme = :theme
@@ -40,7 +39,7 @@ public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
      *
      * @param name la cadena que debe estar contenida en el nombre de los instrumentos.
      * @return una lista de instrumentos cuyos nombres contienen la cadena especificada, ignorando mayúsculas y minúsculas.
-     *
+     * <p>
      * Ejemplo en la base de datos:
      * Si buscas instrumentos cuyo nombre contenga "guitarra", la consulta JPQL sería:
      * SELECT i FROM Instrument i WHERE LOWER(i.name) LIKE LOWER(CONCAT('%', :name, '%'))

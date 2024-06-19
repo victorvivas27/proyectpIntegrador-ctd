@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Confirmación de Reserva</title>
+    <style>
+        body {
+          font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+          margin: 0;
+          padding: 0;
+          max-width:600px;
+          margin: auto;
+        }
+        .reservation-container {
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+            rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+            rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        }
+        .header-image {
+          width: 100%;
+          height: 80px;
+        }
+        .footer-image {
+          width: 100%;
+          height: 80px;
+        }
+        .confirmation-title {
+          color: #1e88e5;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .greeting,
+        .success-msg,
+        .reservation-details,
+        .reminder-msg,
+        .thank-you-msg,
+        .signature {
+          margin-bottom: 10px;
+          margin: 5px;
+        }
+        .details-list {
+          list-style: none;
+          padding: 0;
+          margin: 5px;
+        }
+        .details-list li {
+          margin-bottom: 10px;
+        }
+        .separator {
+          border: 0;
+          height: 1px;
+          background: #464141;
+          margin: 20px 0;
+        }
+        .imagenURL {
+          display: block;
+          max-width: 200px;
+          margin: 20px auto;
+          border-radius: 5px;
+          filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.1))
+            drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));
+        }
+         .footer {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+        rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+        rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #463812;
+
+  }
+.contact-info a {
+    color: #007bff;
+    text-decoration: none;
+}
+.logo{
+    width: 45px;
+    margin: 3px;
+  }
+  img{
+    margin: 5px;
+  }
+  a{
+    text-decoration: none;
+  }
+.social-icon {
+    width: 15px;
+    }
+        .derechos{
+        font-size: 8px;
+        }
+    </style>
+  </head>
+  <body>
+
+  <div class="reservation-container">
+      <img alt="Header Image" class="header-image" th:src="@{cid:backgroundImage}"/>
+      <h1 class="confirmation-title">Confirmación de Reserva</h1>
+      <p class="greeting">Estimado/a <strong class="name" th:text="${nombre} + ' ' + ${apellido}"></strong>,</p>
+      <p class="success-msg">Nos complace informarle que su reserva ha sido confirmada exitosamente.</p>
+      <hr class="separator"/>
+      <p class="reservation-details"><strong>Detalles de la Reserva:</strong></p>
+      <ul class="details-list">
+          <li><b>Instrumento:</b> <span th:text="${instrumento}"></span></li>
+          <li><b>Fecha de Inicio:</b> <span th:text="${fechaInicio}"></span></li>
+          <li><b>Fecha de Fin:</b> <span th:text="${fechaFin}"></span></li>
+          <li><b>Código de Reserva:</b> <span th:text="${codigoReserva}"></span></li>
+          <li><b>Precio Total del Alquiler:</b> $<span th:text="${precioTotal}"></span></li>
+      </ul>
+      <hr class="separator"/>
+      <p class="reminder-msg">Le recordamos que debe devolver el instrumento en buen estado para evitar cargos
+          adicionales.</p>
+      <p class="thank-you-msg">Gracias por su preferencia.</p>
+      <p class="signature">Atentamente,<br/>Music House</p>
+      <hr class="separator"/>
+      <img alt="Instrumento Reservado" class="imagenURL" th:src="@{${imagenURL}}"/>
+      <footer class="footer">
+          <img alt="logo music house" class="logo" th:src="@{cid:logoImage}"/>
+          <div class="contact-info">
+              <strong>Music House</strong><br/>
+              <span class="derechos">Calle Falsa 123, Ciudad, País</span>
+              <br/>
+              <span class="derechos">Tel: <a href="tel:+1234567890">(123) 456-7890</a></span><br/>
+              <span class="derechos">Email: <a
+                      href="mailto:proyectointegradorequipo.01@gmail.com">proyectointegradorequipo.01@gmail.com</a></span>
+          </div>
+          <div class="social-media">
+              <a href="https://wa.me/1234567890" target="_blank">
+                  <img alt="icono whatsapp" class="social-icon" th:src="@{cid:whatsappIcon}"/>
+              </a>
+              <a href="https://facebook.com" target="_blank">
+                  <img alt="icono facebook" class="social-icon" th:src="@{cid:facebookIcon}"/>
+              </a>
+              <a href="https://twitter.com" target="_blank">
+                  <img alt="icono x" class="social-icon" th:src="@{cid:xIcon}"/>
+              </a>
+              <a href="https://instagram.com" target="_blank">
+                  <img alt="icono instagram" class="social-icon" th:src="@{cid:instagramIcon}"/>
+              </a>
+          </div>
+          <p class="derechos">&copy; 2024 Music House. Todos los derechos reservados.</p>
+      </footer>
+      <img alt="Header Image" class="header-image" th:src="@{cid:backgroundImage}"/>
+  </div>
+  </body>
+  </html>

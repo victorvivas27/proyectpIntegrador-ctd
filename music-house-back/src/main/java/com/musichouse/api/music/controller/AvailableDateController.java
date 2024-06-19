@@ -120,6 +120,7 @@ public class AvailableDateController {
                     .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
+
     @GetMapping("/find/all/{dateAvailable}/{idInstrument}")
     public ResponseEntity<ApiResponse<List<AvailableDateDtoExit>>> findAllAvailableDatesByInstrumentId(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateAvailable,

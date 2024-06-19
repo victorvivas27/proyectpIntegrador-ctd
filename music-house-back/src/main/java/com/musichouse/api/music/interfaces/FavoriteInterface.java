@@ -2,7 +2,6 @@ package com.musichouse.api.music.interfaces;
 
 import com.musichouse.api.music.dto.dto_entrance.FavoriteDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.FavoriteDtoExit;
-import com.musichouse.api.music.dto.dto_exit.PhoneDtoExit;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.util.ApiResponse;
 
@@ -13,6 +12,7 @@ public interface FavoriteInterface {
     FavoriteDtoExit addFavorite(FavoriteDtoEntrance favoriteDtoEntrance) throws ResourceNotFoundException;
 
     List<FavoriteDtoExit> getAllFavorite();
+
     List<FavoriteDtoExit> getFavoritesByUserId(Long idUser) throws ResourceNotFoundException;
 
     public ApiResponse deleteFavorite(Long idInstrument, Long idUser, Long idFavorite) throws ResourceNotFoundException;

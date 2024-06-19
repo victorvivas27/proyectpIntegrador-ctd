@@ -2,9 +2,7 @@ package com.musichouse.api.music.controller;
 
 import com.musichouse.api.music.dto.dto_entrance.PrivacyPolicyDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.PrivacyPolicyDtoExit;
-import com.musichouse.api.music.dto.dto_exit.ThemeDtoExit;
 import com.musichouse.api.music.dto.dto_modify.PrivacyPolicyDtoModify;
-import com.musichouse.api.music.dto.dto_modify.ThemeDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.PrivacyPolicyService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -22,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/privacy-policy")
 public class PrivacyPolicyController {
     private final PrivacyPolicyService privacyPolicyService;
+
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<?>> addPhone(@Valid @RequestBody PrivacyPolicyDtoEntrance privacyPolicyDtoEntrance) throws ResourceNotFoundException {
         try {
@@ -38,7 +37,7 @@ public class PrivacyPolicyController {
     public ResponseEntity<ApiResponse<List<PrivacyPolicyDtoExit>>> allPrivacyPolicy() {
         List<PrivacyPolicyDtoExit> privacyPolicyDtoExits = privacyPolicyService.getAllPrivacyPolicy();
         ApiResponse<List<PrivacyPolicyDtoExit>> response =
-                new ApiResponse<>("Lista de Politica de Privacidad exitosa.",privacyPolicyDtoExits);
+                new ApiResponse<>("Lista de Politica de Privacidad exitosa.", privacyPolicyDtoExits);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

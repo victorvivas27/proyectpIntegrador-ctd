@@ -2,10 +2,8 @@ package com.musichouse.api.music.service;
 
 import com.musichouse.api.music.dto.dto_entrance.PrivacyPolicyDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.PrivacyPolicyDtoExit;
-import com.musichouse.api.music.dto.dto_exit.ThemeDtoExit;
 import com.musichouse.api.music.dto.dto_modify.PrivacyPolicyDtoModify;
 import com.musichouse.api.music.entity.PrivacyPolicy;
-import com.musichouse.api.music.entity.Theme;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.PrivacyPolicyInterface;
 import com.musichouse.api.music.repository.PrivacyPolicyRepocitory;
@@ -26,18 +24,19 @@ public class PrivacyPolicyService implements PrivacyPolicyInterface {
     private final static Logger LOGGER = LoggerFactory.getLogger(PrivacyPolicyService.class);
     private final PrivacyPolicyRepocitory privacyPolicyRepocitory;
     private final ModelMapper mapper;
+
     @Override
     @Transactional
     public PrivacyPolicyDtoExit createPrivacyPolicy(PrivacyPolicyDtoEntrance privacyPolicyDtoEntrance) {
-        PrivacyPolicy privacyPolicy=new PrivacyPolicy();
+        PrivacyPolicy privacyPolicy = new PrivacyPolicy();
         privacyPolicy.setTitle(privacyPolicyDtoEntrance.getTitle());
         privacyPolicy.setContent(privacyPolicyDtoEntrance.getContent());
-        PrivacyPolicy privacyPolicySaved=privacyPolicyRepocitory.save(privacyPolicy);
-        PrivacyPolicyDtoExit privacyPolicyDtoExit=new PrivacyPolicyDtoExit();
+        PrivacyPolicy privacyPolicySaved = privacyPolicyRepocitory.save(privacyPolicy);
+        PrivacyPolicyDtoExit privacyPolicyDtoExit = new PrivacyPolicyDtoExit();
         privacyPolicyDtoExit.setTitle(privacyPolicySaved.getTitle());
         privacyPolicyDtoExit.setContent(privacyPolicySaved.getContent());
         privacyPolicyDtoExit.setRegistDate(new Date());
-        privacyPolicyDtoExit=mapper.map(privacyPolicySaved,PrivacyPolicyDtoExit.class);
+        privacyPolicyDtoExit = mapper.map(privacyPolicySaved, PrivacyPolicyDtoExit.class);
         return privacyPolicyDtoExit;
     }
 
@@ -56,7 +55,7 @@ public class PrivacyPolicyService implements PrivacyPolicyInterface {
         privacyPolicyUpdate.setTitle(privacyPolicyDtoModify.getTitle());
         privacyPolicyUpdate.setContent(privacyPolicyDtoModify.getContent());
         privacyPolicyRepocitory.save(privacyPolicyUpdate);
-        return mapper.map(privacyPolicyUpdate,PrivacyPolicyDtoExit.class);
+        return mapper.map(privacyPolicyUpdate, PrivacyPolicyDtoExit.class);
     }
 
     @Override

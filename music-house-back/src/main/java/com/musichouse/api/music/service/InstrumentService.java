@@ -27,7 +27,7 @@ public class InstrumentService implements InstrumentInterface {
     private final CategoryRepository categoryRepository;
     private final ThemeRepository themeRepository;
     private final AvailableDateRepository availableDateRepository;
-    private  final FavoriteRepository favoriteRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public InstrumentDtoExit createInstrument(InstrumentDtoEntrance instrumentsDtoEntrance) throws ResourceNotFoundException {

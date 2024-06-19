@@ -50,9 +50,22 @@ public class GlobalExeceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse<>(e.getMessage(), null));
     }
-    @ExceptionHandler( FavoriteAlreadyExistsException .class)
-    public ResponseEntity<?> FavoriteAlreadyExistsException ( FavoriteAlreadyExistsException  e) {
+
+    @ExceptionHandler(FavoriteAlreadyExistsException.class)
+    public ResponseEntity<?> FavoriteAlreadyExistsException(FavoriteAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse<>(e.getMessage(), null));
+    }
+
+    @ExceptionHandler(ReservationAlreadyExistsException.class)
+    public ResponseEntity<?> ReservationAlreadyExistsException(ReservationAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse<>(e.getMessage(), null));
+    }
+
+    @ExceptionHandler(InvalidReservationDurationException.class)
+    public ResponseEntity<?> InvalidReservationDurationException(InvalidReservationDurationException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponse<>(e.getMessage(), null));
     }
 }

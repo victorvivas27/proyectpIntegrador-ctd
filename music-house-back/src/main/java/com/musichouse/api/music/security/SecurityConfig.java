@@ -58,6 +58,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/favorite/**").permitAll()
                         // Rutas de Politica de privacidad  (todas las operaciones)
                         .requestMatchers("/api/privacy-policy/**").permitAll()
+                        // Rutas de Reserva  (todas las operaciones)
+                        .requestMatchers("/api/reservations/**").permitAll()
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
