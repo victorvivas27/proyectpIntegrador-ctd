@@ -3,6 +3,7 @@ package com.musichouse.api.music.controller;
 import com.musichouse.api.music.dto.dto_entrance.ReservationDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ReservationDtoExit;
 import com.musichouse.api.music.exception.FavoriteAlreadyExistsException;
+import com.musichouse.api.music.exception.ReservationAlreadyExistsException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.ReservationService;
 import com.musichouse.api.music.util.ApiResponse;
@@ -30,7 +31,7 @@ public class ReservationController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ApiResponse<>(e.getMessage(), null));
-        } catch (FavoriteAlreadyExistsException e) {
+        } catch (ReservationAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(new ApiResponse<>(e.getMessage(), null));
         } catch (Exception e) {
