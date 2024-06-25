@@ -1,6 +1,5 @@
 package com.musichouse.api.music.infra;
 
-import com.musichouse.api.music.util.Constans;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Random;
 
 @AllArgsConstructor
 @NoArgsConstructor

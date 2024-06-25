@@ -8,10 +8,14 @@
 <body style="margin: 0; padding: 0; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; max-width: 600px; margin: auto; background-color: #f7f7f7;">
 
 <div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; background-color: #ffffff; padding: 20px; border-radius: 10px; margin-top: 20px; margin-bottom: 20px;">
-    <img alt="Header Image" th:src="@{cid:backgroundImage}" style="width: 100%; height: 80px; border-radius: 10px 10px 0 0;"/>
+    <img alt="Header Image" style="width: 100%; height: 80px; border-radius: 10px 10px 0 0;"
+         th:src="@{cid:backgroundImage}"/>
     <h1 style="color: #1e88e5; text-align: center; margin-bottom: 20px;">Confirmación de Reserva</h1>
-    <p style="margin-bottom: 10px; margin: 5px;">Estimado/a <strong class="name" th:text="${nombre} + ' ' + ${apellido}"></strong>,</p>
-    <p style="margin-bottom: 10px; margin: 5px;">Nos complace informarle que su reserva ha sido confirmada exitosamente.</p>
+    <p style="margin-bottom: 10px; margin: 5px;">Estimado/a <strong class="name"
+                                                                    th:text="${nombre} + ' ' + ${apellido}"></strong>,
+    </p>
+    <p style="margin-bottom: 10px; margin: 5px;">Nos complace informarle que su reserva ha sido confirmada
+        exitosamente.</p>
     <hr style="border: 0; height: 1px; background: #464141; margin: 20px 0;"/>
     <p style="margin-bottom: 10px; margin: 5px;"><strong>Detalles de la Reserva:</strong></p>
     <ul style="list-style: none; padding: 0; margin: 5px;">
@@ -22,12 +26,14 @@
         <li style="margin-bottom: 10px;"><b>Precio Total del Alquiler:</b> $<span th:text="${precioTotal}"></span></li>
     </ul>
     <hr style="border: 0; height: 1px; background: #464141; margin: 20px 0;"/>
-    <p style="margin-bottom: 10px; margin: 5px;">Le recordamos que debe devolver el instrumento en buen estado para evitar cargos adicionales.</p>
+    <p style="margin-bottom: 10px; margin: 5px;">Le recordamos que debe devolver el instrumento en buen estado para
+        evitar cargos adicionales.</p>
     <p style="margin-bottom: 10px; margin: 5px;">Gracias por su preferencia.</p>
     <p style="margin-bottom: 10px; margin: 5px;">Atentamente,<br/>Music House</p>
     <hr style="border: 0; height: 1px; background: #464141; margin: 20px 0;"/>
     <div>
-    <img alt="Instrumento Reservado" th:src="@{${imagenURL}}" style="display: block; max-width: 200px; margin: 20px auto; border-radius: 10px; filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));"/>
+        <img alt="Instrumento Reservado" style="display: block; max-width: 200px; margin: 20px auto; border-radius: 10px; filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));"
+             th:src="@{${imagenURL}}"/>
         <!-- Enlace a sección principal -->
         <div style="text-align: center; margin: 20px 0;">
             <a class="link-button" href="http://34.192.181.246/"
@@ -37,25 +43,30 @@
         </div>
     </div>
     <footer style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; padding: 10px; text-align: center; font-size: 12px; color: #463812; background-color: #f1f1f1; border-radius: 0 0 10px 10px;">
-        <img alt="logo music house" th:src="@{cid:logoImage}" style="width: 45px; margin: 3px;"/>
+        <img alt="logo music house" style="width: 45px; margin: 3px;" th:src="@{cid:logoImage}"/>
         <div style="color: #007bff;">
             <strong>Music House</strong><br/>
             <span style="font-size: 10px;">Calle Falsa 123, Ciudad, País</span><br/>
-            <span style="font-size: 10px;">Tel: <a href="tel:+1234567890" style="text-decoration: none; color: #007bff;">(123) 456-7890</a></span><br/>
-            <span style="font-size: 10px;">Email: <a href="mailto:proyectointegradorequipo.01@gmail.com" style="text-decoration: none; color: #007bff;">proyectointegradorequipo.01@gmail.com</a></span>
+            <span style="font-size: 10px;">Tel: <a href="tel:+1234567890"
+                                                   style="text-decoration: none; color: #007bff;">(123) 456-7890</a></span><br/>
+            <span style="font-size: 10px;">Email: <a href="mailto:proyectointegradorequipo.01@gmail.com"
+                                                     style="text-decoration: none; color: #007bff;">proyectointegradorequipo.01@gmail.com</a></span>
         </div>
         <div style="margin: 5px;">
-            <a href="https://wa.me/+56986841970" target="_blank" style="text-decoration: none;">
-                <img alt="icono whatsapp" th:src="@{cid:whatsappIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            <a href="https://wa.me/+56986841970" style="text-decoration: none;" target="_blank">
+                <img alt="icono whatsapp" style="width: 24px; margin: 0 5px; vertical-align: middle;"
+                     th:src="@{cid:whatsappIcon}"/>
             </a>
-            <a href="https://facebook.com" target="_blank" style="text-decoration: none;">
-                <img alt="icono facebook" th:src="@{cid:facebookIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            <a href="https://facebook.com" style="text-decoration: none;" target="_blank">
+                <img alt="icono facebook" style="width: 24px; margin: 0 5px; vertical-align: middle;"
+                     th:src="@{cid:facebookIcon}"/>
             </a>
-            <a href="https://twitter.com" target="_blank" style="text-decoration: none;">
-                <img alt="icono x" th:src="@{cid:xIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            <a href="https://twitter.com" style="text-decoration: none;" target="_blank">
+                <img alt="icono x" style="width: 24px; margin: 0 5px; vertical-align: middle;" th:src="@{cid:xIcon}"/>
             </a>
-            <a href="https://instagram.com" target="_blank" style="text-decoration: none;">
-                <img alt="icono instagram" th:src="@{cid:instagramIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            <a href="https://instagram.com" style="text-decoration: none;" target="_blank">
+                <img alt="icono instagram" style="width: 24px; margin: 0 5px; vertical-align: middle;"
+                     th:src="@{cid:instagramIcon}"/>
             </a>
         </div>
         <p style="font-size: 8px;">&copy; 2024 Music House. Todos los derechos reservados.</p>

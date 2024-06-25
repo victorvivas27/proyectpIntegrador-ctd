@@ -21,6 +21,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     @Transactional
     void deleteByInstrumentIdInstrument(Long idInstrument);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Favorite f WHERE f.user.id = :userId")

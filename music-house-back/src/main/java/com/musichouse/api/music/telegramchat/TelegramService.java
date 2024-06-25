@@ -87,6 +87,7 @@ public class TelegramService {
             e.printStackTrace();
         }
     }
+
     @Async
     public void enviarMensajeDeCancelacion(Long telegramChatId, String userName, String lastName) {
         String codigoDescuento = CodeGenerator.generateCodeRandom();

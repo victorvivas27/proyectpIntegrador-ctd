@@ -1,10 +1,8 @@
 package com.musichouse.api.music.telegramchat;
 
 
-
 import com.musichouse.api.music.config.TelegramBotConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -43,14 +41,24 @@ public class MyTelegramBot extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
 
-            Boolean inicializacionCompletada = inicializacionCompletadaMap.getOrDefault(chatId, false);
-
-            if (messageText.equalsIgnoreCase("/start") && !inicializacionCompletada) {
-                enviarMensaje("¡Bienvenido al bot de Music House! 🎵 Aquí encontrarás descuentos exclusivos y la mejor asistencia personalizada." +
-                        "\n\nA continuación, te presento nuestro video introductorio. 👇", chatId);
-                enviarVideoIntroductorio(chatId);
-                mostrarOpcionesIniciales(chatId);
-                inicializacionCompletadaMap.put(chatId, true);
+            if (messageText.equalsIgnoreCase("/start")) {
+                Boolean inicializacionCompletada = inicializacionCompletadaMap.getOrDefault(chatId, false);
+                if (!inicializacionCompletada) {
+                    inicializacionCompletadaMap.put(chatId, false);
+                    enviarMensaje("¡Bienvenido al bot de Music House! 🎵 Aquí encontrarás descuentos exclusivos y la mejor asistencia personalizada." +
+                            "\n\nA continuación, te presento nuestro video introductorio. 👇", chatId);
+                    enviarVideoIntroductorio(chatId);
+                    mostrarOpcionesIniciales(chatId);
+                    inicializacionCompletadaMap.put(chatId, true);
+                } else {
+                    enviarMensaje("Has reiniciado la conversación. Empezamos de nuevo.", chatId);
+                    inicializacionCompletadaMap.put(chatId, false); // Reiniciar el estado
+                    enviarMensaje("¡Bienvenido al bot de Music House! 🎵 Aquí encontrarás descuentos exclusivos y la mejor asistencia personalizada." +
+                            "\n\nA continuación, te presento nuestro video introductorio. 👇", chatId);
+                    enviarVideoIntroductorio(chatId);
+                    mostrarOpcionesIniciales(chatId);
+                    inicializacionCompletadaMap.put(chatId, true);
+                }
             } else {
                 enviarMensaje("No comprendo tu mensaje. 🤔", chatId);
             }

@@ -6,7 +6,6 @@ import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
-import com.musichouse.api.music.entity.Favorite;
 import com.musichouse.api.music.entity.Role;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
