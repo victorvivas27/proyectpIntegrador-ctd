@@ -61,6 +61,7 @@ public class SecurityConfig {
                         // Rutas de Reserva  (todas las operaciones)
                         .requestMatchers("/api/reservations/**").permitAll()
 
+
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

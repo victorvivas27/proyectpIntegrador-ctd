@@ -4,146 +4,62 @@
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Confirmación de Reserva</title>
-    <style>
-        body {
-          font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-          margin: 0;
-          padding: 0;
-          max-width:600px;
-          margin: auto;
-        }
-        .reservation-container {
-          box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-            rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-            rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-        }
-        .header-image {
-          width: 100%;
-          height: 80px;
-        }
-        .footer-image {
-          width: 100%;
-          height: 80px;
-        }
-        .confirmation-title {
-          color: #1e88e5;
-          text-align: center;
-          margin-bottom: 20px;
-        }
+</head>
+<body style="margin: 0; padding: 0; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; max-width: 600px; margin: auto; background-color: #f7f7f7;">
 
-        .greeting,
-        .success-msg,
-        .reservation-details,
-        .reminder-msg,
-        .thank-you-msg,
-        .signature {
-          margin-bottom: 10px;
-          margin: 5px;
-        }
-        .details-list {
-          list-style: none;
-          padding: 0;
-          margin: 5px;
-        }
-        .details-list li {
-          margin-bottom: 10px;
-        }
-        .separator {
-          border: 0;
-          height: 1px;
-          background: #464141;
-          margin: 20px 0;
-        }
-        .imagenURL {
-          display: block;
-          max-width: 200px;
-          margin: 20px auto;
-          border-radius: 5px;
-          filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.1))
-            drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));
-        }
-         .footer {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-        rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-        rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    padding: 10px;
-    text-align: center;
-    font-size: 12px;
-    color: #463812;
-
-  }
-.contact-info a {
-    color: #007bff;
-    text-decoration: none;
-}
-.logo{
-    width: 45px;
-    margin: 3px;
-  }
-  img{
-    margin: 5px;
-  }
-  a{
-    text-decoration: none;
-  }
-.social-icon {
-    width: 15px;
-    }
-        .derechos{
-        font-size: 8px;
-        }
-    </style>
-  </head>
-  <body>
-
-  <div class="reservation-container">
-      <img alt="Header Image" class="header-image" th:src="@{cid:backgroundImage}"/>
-      <h1 class="confirmation-title">Confirmación de Reserva</h1>
-      <p class="greeting">Estimado/a <strong class="name" th:text="${nombre} + ' ' + ${apellido}"></strong>,</p>
-      <p class="success-msg">Nos complace informarle que su reserva ha sido confirmada exitosamente.</p>
-      <hr class="separator"/>
-      <p class="reservation-details"><strong>Detalles de la Reserva:</strong></p>
-      <ul class="details-list">
-          <li><b>Instrumento:</b> <span th:text="${instrumento}"></span></li>
-          <li><b>Fecha de Inicio:</b> <span th:text="${fechaInicio}"></span></li>
-          <li><b>Fecha de Fin:</b> <span th:text="${fechaFin}"></span></li>
-          <li><b>Código de Reserva:</b> <span th:text="${codigoReserva}"></span></li>
-          <li><b>Precio Total del Alquiler:</b> $<span th:text="${precioTotal}"></span></li>
-      </ul>
-      <hr class="separator"/>
-      <p class="reminder-msg">Le recordamos que debe devolver el instrumento en buen estado para evitar cargos
-          adicionales.</p>
-      <p class="thank-you-msg">Gracias por su preferencia.</p>
-      <p class="signature">Atentamente,<br/>Music House</p>
-      <hr class="separator"/>
-      <img alt="Instrumento Reservado" class="imagenURL" th:src="@{${imagenURL}}"/>
-      <footer class="footer">
-          <img alt="logo music house" class="logo" th:src="@{cid:logoImage}"/>
-          <div class="contact-info">
-              <strong>Music House</strong><br/>
-              <span class="derechos">Calle Falsa 123, Ciudad, País</span>
-              <br/>
-              <span class="derechos">Tel: <a href="tel:+1234567890">(123) 456-7890</a></span><br/>
-              <span class="derechos">Email: <a
-                      href="mailto:proyectointegradorequipo.01@gmail.com">proyectointegradorequipo.01@gmail.com</a></span>
-          </div>
-          <div class="social-media">
-              <a href="https://wa.me/1234567890" target="_blank">
-                  <img alt="icono whatsapp" class="social-icon" th:src="@{cid:whatsappIcon}"/>
-              </a>
-              <a href="https://facebook.com" target="_blank">
-                  <img alt="icono facebook" class="social-icon" th:src="@{cid:facebookIcon}"/>
-              </a>
-              <a href="https://twitter.com" target="_blank">
-                  <img alt="icono x" class="social-icon" th:src="@{cid:xIcon}"/>
-              </a>
-              <a href="https://instagram.com" target="_blank">
-                  <img alt="icono instagram" class="social-icon" th:src="@{cid:instagramIcon}"/>
-              </a>
-          </div>
-          <p class="derechos">&copy; 2024 Music House. Todos los derechos reservados.</p>
-      </footer>
-      <img alt="Header Image" class="header-image" th:src="@{cid:backgroundImage}"/>
-  </div>
-  </body>
-  </html>
+<div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; background-color: #ffffff; padding: 20px; border-radius: 10px; margin-top: 20px; margin-bottom: 20px;">
+    <img alt="Header Image" th:src="@{cid:backgroundImage}" style="width: 100%; height: 80px; border-radius: 10px 10px 0 0;"/>
+    <h1 style="color: #1e88e5; text-align: center; margin-bottom: 20px;">Confirmación de Reserva</h1>
+    <p style="margin-bottom: 10px; margin: 5px;">Estimado/a <strong class="name" th:text="${nombre} + ' ' + ${apellido}"></strong>,</p>
+    <p style="margin-bottom: 10px; margin: 5px;">Nos complace informarle que su reserva ha sido confirmada exitosamente.</p>
+    <hr style="border: 0; height: 1px; background: #464141; margin: 20px 0;"/>
+    <p style="margin-bottom: 10px; margin: 5px;"><strong>Detalles de la Reserva:</strong></p>
+    <ul style="list-style: none; padding: 0; margin: 5px;">
+        <li style="margin-bottom: 10px;"><b>Instrumento:</b> <span th:text="${instrumento}"></span></li>
+        <li style="margin-bottom: 10px;"><b>Fecha de Inicio:</b> <span th:text="${fechaInicio}"></span></li>
+        <li style="margin-bottom: 10px;"><b>Fecha de Fin:</b> <span th:text="${fechaFin}"></span></li>
+        <li style="margin-bottom: 10px;"><b>Código de Reserva:</b> <span th:text="${codigoReserva}"></span></li>
+        <li style="margin-bottom: 10px;"><b>Precio Total del Alquiler:</b> $<span th:text="${precioTotal}"></span></li>
+    </ul>
+    <hr style="border: 0; height: 1px; background: #464141; margin: 20px 0;"/>
+    <p style="margin-bottom: 10px; margin: 5px;">Le recordamos que debe devolver el instrumento en buen estado para evitar cargos adicionales.</p>
+    <p style="margin-bottom: 10px; margin: 5px;">Gracias por su preferencia.</p>
+    <p style="margin-bottom: 10px; margin: 5px;">Atentamente,<br/>Music House</p>
+    <hr style="border: 0; height: 1px; background: #464141; margin: 20px 0;"/>
+    <div>
+    <img alt="Instrumento Reservado" th:src="@{${imagenURL}}" style="display: block; max-width: 200px; margin: 20px auto; border-radius: 10px; filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.08));"/>
+        <!-- Enlace a sección principal -->
+        <div style="text-align: center; margin: 20px 0;">
+            <a class="link-button" href="http://34.192.181.246/"
+               style="display: inline-block; padding: 10px 20px;
+               background-color: #1e88e5; color: #fff; text-decoration: none;
+               border-radius: 5px;">Volve Alquilar</a>
+        </div>
+    </div>
+    <footer style="box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; padding: 10px; text-align: center; font-size: 12px; color: #463812; background-color: #f1f1f1; border-radius: 0 0 10px 10px;">
+        <img alt="logo music house" th:src="@{cid:logoImage}" style="width: 45px; margin: 3px;"/>
+        <div style="color: #007bff;">
+            <strong>Music House</strong><br/>
+            <span style="font-size: 10px;">Calle Falsa 123, Ciudad, País</span><br/>
+            <span style="font-size: 10px;">Tel: <a href="tel:+1234567890" style="text-decoration: none; color: #007bff;">(123) 456-7890</a></span><br/>
+            <span style="font-size: 10px;">Email: <a href="mailto:proyectointegradorequipo.01@gmail.com" style="text-decoration: none; color: #007bff;">proyectointegradorequipo.01@gmail.com</a></span>
+        </div>
+        <div style="margin: 5px;">
+            <a href="https://wa.me/+56986841970" target="_blank" style="text-decoration: none;">
+                <img alt="icono whatsapp" th:src="@{cid:whatsappIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            </a>
+            <a href="https://facebook.com" target="_blank" style="text-decoration: none;">
+                <img alt="icono facebook" th:src="@{cid:facebookIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            </a>
+            <a href="https://twitter.com" target="_blank" style="text-decoration: none;">
+                <img alt="icono x" th:src="@{cid:xIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            </a>
+            <a href="https://instagram.com" target="_blank" style="text-decoration: none;">
+                <img alt="icono instagram" th:src="@{cid:instagramIcon}" style="width: 24px; margin: 0 5px; vertical-align: middle;"/>
+            </a>
+        </div>
+        <p style="font-size: 8px;">&copy; 2024 Music House. Todos los derechos reservados.</p>
+    </footer>
+</div>
+</body>
+</html>

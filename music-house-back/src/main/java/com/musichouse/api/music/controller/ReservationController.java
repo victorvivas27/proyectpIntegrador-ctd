@@ -2,7 +2,6 @@ package com.musichouse.api.music.controller;
 
 import com.musichouse.api.music.dto.dto_entrance.ReservationDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ReservationDtoExit;
-import com.musichouse.api.music.exception.FavoriteAlreadyExistsException;
 import com.musichouse.api.music.exception.ReservationAlreadyExistsException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.ReservationService;

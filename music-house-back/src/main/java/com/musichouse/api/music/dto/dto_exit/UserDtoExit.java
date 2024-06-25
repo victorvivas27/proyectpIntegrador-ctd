@@ -19,6 +19,7 @@ public class UserDtoExit {
     private String name;
     private String lastName;
     private String email;
+    private Long telegramChatId;
     private List<Role> roles;
     private List<AddressDtoExit> addresses;
     private List<PhoneDtoExit> phones;

@@ -158,6 +158,13 @@
             <version>2.7.3</version>
         </dependency>
 
+        <!-- Dependencia de Telegram Bots -->
+
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
+            <version>6.5.0</version>
+        </dependency>
 
     </dependencies>
     <build>

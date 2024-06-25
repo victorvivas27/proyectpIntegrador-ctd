@@ -106,6 +106,12 @@ public class User implements UserDetails {
     @Column(name = "regist_date")
     private Date registDate;
 
+    /**
+     * Identificador único de Telegram del usuario.
+     */
+    @Column(name = "chat_id", nullable = true)
+    private Long telegramChatId;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles

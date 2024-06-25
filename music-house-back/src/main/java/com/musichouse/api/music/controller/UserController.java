@@ -7,6 +7,9 @@ import com.musichouse.api.music.service.UserService;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.modelmapper.MappingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +22,22 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<UserDtoExit>>> allPhone() {
-        List<UserDtoExit> userDtoExits = userService.getAllUser();
-        ApiResponse<List<UserDtoExit>> response =
-                new ApiResponse<>("Lista de Usuarios exitosa.", userDtoExits);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        try {
+            List<UserDtoExit> userDtoExits = userService.getAllUser();
+            ApiResponse<List<UserDtoExit>> response =
+                    new ApiResponse<>("Lista de Usuarios exitosa.", userDtoExits);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (MappingException e) {
+            LOGGER.error("Error al obtener la lista de usuarios: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(e.getMessage(), null));
+        }
     }
 
     @GetMapping("/search/{idUser}")
@@ -67,7 +77,7 @@ public class UserController {
                     .body(new ApiResponse<>("El Usuario con el ID " + idUser + " no se encontró.", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>("Ocurrió un error al procesar la solicitud.", null));
+                    .body(new ApiResponse<>(e.getMessage(), null));
         }
     }
 }

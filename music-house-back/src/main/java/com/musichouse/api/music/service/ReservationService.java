@@ -15,6 +15,8 @@ import com.musichouse.api.music.interfaces.ReservationInterface;
 import com.musichouse.api.music.repository.InstrumentRepository;
 import com.musichouse.api.music.repository.ReservationRepository;
 import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.telegramchat.TelegramService;
+import com.musichouse.api.music.util.CodeGenerator;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,10 +38,10 @@ public class ReservationService implements ReservationInterface {
     private final ModelMapper mapper;
     private final InstrumentRepository instrumentRepository;
     private final UserRepository userRepository;
+    private final TelegramService telegramService;
     @Autowired
     private final MailManager mailManager;
 
-    @Override
     public ReservationDtoExit createReservation(ReservationDtoEntrance reservationDtoEntrance) throws ResourceNotFoundException, MessagingException, IOException {
         Long instrumentId = reservationDtoEntrance.getIdInstrument();
         Long userId = reservationDtoEntrance.getIdUser();
@@ -47,16 +49,12 @@ public class ReservationService implements ReservationInterface {
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el instrumento con el ID:" + instrumentId + " proporcionado"));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el usuario con el ID:" + userId + " proporcionado"));
-        Reservation existingReservation = reservationRepository.findByUserAndInstrument(user, instrument);
-        if (existingReservation != null) {
+
+        // Verificar si el usuario ya tiene una reserva para este instrumento
+        Reservation existingReservationForUser = reservationRepository.findByUserAndInstrument(user, instrument);
+        if (existingReservationForUser != null) {
             throw new ReservationAlreadyExistsException
-                    ("El instrumento con ID: " + instrumentId + " ya tiene una reserva para este usuario con ID: " + userId);
-        }
-        List<Reservation> existingReservations = reservationRepository.findByInstrumentIdAndDateRange(
-                instrumentId, reservationDtoEntrance.getStartDate(), reservationDtoEntrance.getEndDate());
-        if (!existingReservations.isEmpty()) {
-            throw new ReservationAlreadyExistsException
-                    ("El instrumento con ID: " + instrumentId + " ya tiene una reserva en el rango de fechas proporcionado");
+                    ("El usuario con ID: " + userId + " ya tiene una reserva para el instrumento con ID: " + instrumentId);
         }
 
         long rentalDays = ChronoUnit.DAYS.between(reservationDtoEntrance.getStartDate(), reservationDtoEntrance.getEndDate());
@@ -85,7 +83,7 @@ public class ReservationService implements ReservationInterface {
         String imageUrl = instrument.getImageUrls().isEmpty() ? "" : instrument.getImageUrls().get(0).getImageUrl();
         reservationDtoExit.setImageUrl(imageUrl);
 
-        String reservationCode = mailManager.generateReservationCode();
+        String reservationCode = CodeGenerator.generateCodeRandom();
         mailManager.sendReservationConfirmation(
                 user.getEmail(),
                 user.getName(),
@@ -96,6 +94,7 @@ public class ReservationService implements ReservationInterface {
                 reservationCode,
                 totalPrice,
                 imageUrl);
+        telegramService.enviarMensajeDeReserva(user.getTelegramChatId(), reservationDtoExit);
         return reservationDtoExit;
     }
 
@@ -184,6 +183,7 @@ public class ReservationService implements ReservationInterface {
             throw new ResourceNotFoundException("Reserva no encontrada para el usuario con ID " + idUser +
                     " y el instrumento con ID " + idInstrument);
         }
+        telegramService.enviarMensajeDeCancelacion(user.getTelegramChatId(), user.getName(), user.getLastName());
         reservationRepository.delete(reservation);
     }
 
