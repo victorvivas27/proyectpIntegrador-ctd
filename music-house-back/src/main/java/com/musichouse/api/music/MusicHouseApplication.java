@@ -20,13 +20,12 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class MusicHouseApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MusicHouseApplication.class);
-
     @Autowired
     private TelegramBotConfig telegramBotConfig;
-
     public static void main(String[] args) {
         SpringApplication.run(MusicHouseApplication.class, args);
         LOGGER.info("🎹 Let's hit the keys and start the musical journey with MusicHouseApplication! 🎵🌟");
+
     }
 
     @Bean
