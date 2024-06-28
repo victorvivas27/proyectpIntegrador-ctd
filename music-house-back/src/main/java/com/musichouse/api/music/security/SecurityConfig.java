@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/reservations/**").permitAll()
 
 
+
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

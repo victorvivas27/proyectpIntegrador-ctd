@@ -41,6 +41,5 @@ public class UserDtoEntrance {
     @Valid
     @NotNull(message = "El campo phones debe estar presente y no puede estar vacío")
     private List<PhoneDtoEntrance> phones;
-    @NotNull(message = "El campo telegram id  debe estar presente y no puede estar vacío")
     private Long telegramChatId;
 }
